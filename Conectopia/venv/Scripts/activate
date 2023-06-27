@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Admin\Documents\GitHub\Conectopia\Conectopia\venv"
+VIRTUAL_ENV="C:\Users\Admin\Documents\2. Ingenieria en Sistemas\Cuatrimestre 5 - 2023\Bases de Datos NoSQL\Proyecto\Red Social\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -1,0 +1,52 @@
+{% extends 'usuariosBase.html' %}
+
+{% block content %}
+<div class="col-md-6">
+    <div id="loginForm" class="card">
+        <div class="card-body">
+            <h1 class="text-center">Create User</h1>
+            <form action="/createUser/" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        <label style="margin-top: 40px; margin-bottom: 10px;" for="txtFullName">Full Name</label>
+                        <input type="text" name="txtFullName" id="txtFullName" class="form-control"
+                            placeholder="Indicate your User Name">
+                        <label style="margin-top: 40px; margin-bottom: 10px;" for="txtEmail">Email</label>
+                        <input type="text" name="txtEmail" id="txtEmail" class="form-control"
+                            placeholder="Indicate your Email">
+                        <label style="margin-top: 40px; margin-bottom: 10px;" for="txtDate">Date of Birth</label>
+                        <input type="date" name="txtDate" id="txtDate" class="form-control"
+                            placeholder="Indicate your age">
+                    </div>
+                    <div class="col-6">
+                        <label style="margin-top: 40px; margin-bottom: 10px;" for="txtDescription">Your
+                            Description</label>
+                        <input type="text" name="txtDescription" id="txtDescription" class="form-control"
+                            placeholder="How are you?">
+                        <label style="margin-top: 40px; margin-bottom: 10px;" for="txtPassword">Password</label>
+                        <input type="password" name="txtPassword" id="txtPassword" class="form-control"
+                            placeholder="Indicate your password">
+                        <label style="margin-top: 40px; margin-bottom: 10px;" for="txtPasswordConfirmation">Confirm
+                            Password</label>
+                        <input type="password" name="txtPasswordConfirmation" id="txtPasswordConfirmation"
+                            class="form-control" placeholder="Confirm your password">
+                    </div>
+                </div>
+
+                {% if notification is not None %}
+                <div class="alert alert-danger" role="alert" style="margin-top: 25px;">
+                    {{notification}}
+                </div>
+                {% endif %}
+
+                <div class="row justify-content-center" style="margin-top: 25px;">
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-primary">Create User</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
