@@ -1,0 +1,20 @@
+* {
+    background-color: #DFDEEF;
+}
+
+.sections {
+    margin-top: 15px;
+}
+
+.cardheaderUser {
+    background-color: white;
+    background-image: url("https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSEYs2wRGtYk1f40lX_i-CmhQMwcsfUaGTw8NzOwMY3pSvJuWtE");
+    background-repeat: no-repeat;
+    background-size: 100% 60%;
+}
+
+.iconStyle {
+    width: 45px;
+    object-fit: cover;
+    background-color: transparent;
+}

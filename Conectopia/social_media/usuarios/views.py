@@ -9,18 +9,48 @@ from usuarios.models import Usuarios
 def login (request):
     #Execute when the page is going to be load 
     if request.method == 'GET':
-        return (render(request,'login.html'))
+        return render(request,'login.html',{
+            'documentTitle':'Log In'
+        })
     
     #The user complete the form
     if request.method == 'POST':
-        print(request.POST['txtUser'])
-        return HttpResponse(request.POST['txtUser'])
-    
+
+        txtUser = request.POST.get('txtUser')
+        txtPassword = request.POST.get('txtPassword')
+
+        try: 
+            userDB = Usuarios.objects.get(correo = txtUser, contrasenna = txtPassword)
+
+            if(userDB == None):
+                return render(request, 'login.html',{
+                    'documentTitle':'Log In',
+                    'notification':'User not found'
+                })
+            else:
+                return render(request,'userConfiguration.html',{
+                    'documentTitle':'User Configuration'
+                })
+        except:
+            return render(request, 'login.html',{
+                'documentTitle':'Log In',
+                'notification':'User not found'
+            })
+
+def userConfiguration(request):
+
+    #Execute when the page is going to be load
+    if request.method == 'GET':
+        return render(request,'userConfiguration.html',{
+            'documentTitle':'User Configuration'
+        })
 
 def createUser(request):
     #Load the page when the user press the create user button. 
     if request.method == 'GET':
-        return (render(request,'createUser.html'))
+        return render(request,'createUser.html',{
+            'documentTitle':'Create User'
+        })
     
     #Create a new user when the user complete the form
     if request.method == 'POST':
@@ -46,10 +76,20 @@ def createUser(request):
 
             user.save()
 
-            return render(request,'createUser.html',{
-                'notification':'User created'
+            return render(request,'createUser_profilePic.html',{
+                'documentTitle':'Create User - ProfilePic',
+                'userName':txtFullName,
             })
+        
         else:
             return render(request,'createUser.html',{
                 'notification':'The password confirmation does not match'
             })
+
+def profilePic(request):
+
+    #Execute when the page is going to be load
+    if request.method == 'GET':
+        return render(request,'createUser_profilePic.html',{
+            'documentTitle':'Create User - ProfilePic'
+        })

@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',usuariosViews.login),
     path('createUser/',usuariosViews.createUser),
-    path('login/',usuariosViews.login)
+    path('login/',usuariosViews.login),
+    path('userConfiguration/',usuariosViews.userConfiguration)
 ]
