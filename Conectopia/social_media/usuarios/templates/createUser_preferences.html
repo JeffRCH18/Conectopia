@@ -1,0 +1,39 @@
+{% extends 'usuariosBase.html' %}
+
+{% block content %}
+
+<div class="col-md-6">
+    <div id="loginForm" class="card">
+        <div class="card-body">
+            <h1 class="text-center">User Preferences</h1>
+            <p class="text-center text-muted">Select your preferences</p>
+            <form action="/createUser/" method="POST">
+                {% csrf_token %}
+                <div class="row justify-content-center">
+
+                    <!-- Show all the possible preferences to the user -->
+
+                    {% for preference in preferences %}
+                    <div class="col-md-3 text-center" style="margin-top: 10px;">
+                        <input type="checkbox" class="btn-check" id="btn-check-outlined_'{{ preference.gusto }}'" autocomplete="off">
+                        <label class="btn btn-outline-secondary" style="width: 70%;" for="btn-check-outlined_'{{ preference.gusto }}'">{{ preference.gusto }}</label><br>
+                    </div>
+                    {% endfor %}
+
+
+                </div>
+
+
+                <div class="row justify-content-center" style="margin-top: 25px;">
+                    <div class="col-md-2">
+
+                        <button class="btn btn-outline-primary">Create User</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

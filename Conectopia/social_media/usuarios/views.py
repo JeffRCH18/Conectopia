@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.shortcuts import redirect
 
 #Import models related to Django
 from usuarios.models import Usuarios
+from usuarios.models import Gustos
 
 # Create your views here.
 def login (request):
@@ -25,16 +27,20 @@ def login (request):
             if(userDB == None):
                 return render(request, 'login.html',{
                     'documentTitle':'Log In',
-                    'notification':'User not found'
+                    'notification':'User ' + txtUser + ' not found'
                 })
             else:
+
+                request.session['userName'] = userDB.nombre
+
                 return render(request,'userConfiguration.html',{
                     'documentTitle':'User Configuration'
                 })
-        except:
+        except Exception as e:
+            print(e)
             return render(request, 'login.html',{
                 'documentTitle':'Log In',
-                'notification':'User not found'
+                'notification':'User ' + txtUser + ' not found'
             })
 
 def userConfiguration(request):
@@ -76,15 +82,19 @@ def createUser(request):
 
             user.save()
 
-            return render(request,'createUser_profilePic.html',{
-                'documentTitle':'Create User - ProfilePic',
-                'userName':txtFullName,
-            })
+            return redirect(preferences)
         
         else:
             return render(request,'createUser.html',{
                 'notification':'The password confirmation does not match'
             })
+        
+def preferences(request):
+    if request.method == "GET":
+
+        context = {'preferences' : Gustos.objects.all()}
+
+        return render(request,'createUser_preferences.html',context)
 
 def profilePic(request):
 

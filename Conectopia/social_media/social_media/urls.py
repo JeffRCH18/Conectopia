@@ -23,5 +23,6 @@ urlpatterns = [
     path('',usuariosViews.login),
     path('createUser/',usuariosViews.createUser),
     path('login/',usuariosViews.login),
-    path('userConfiguration/',usuariosViews.userConfiguration)
+    path('userConfiguration/',usuariosViews.userConfiguration),
+    path('createUser_Preferences/',usuariosViews.preferences)
 ]
