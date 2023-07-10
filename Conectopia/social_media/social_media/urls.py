@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from usuarios import views as usuariosViews
+from friends import views as friendsViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +25,8 @@ urlpatterns = [
     path('createUser/',usuariosViews.createUser),
     path('login/',usuariosViews.login),
     path('userConfiguration/',usuariosViews.userConfiguration),
-    path('createUser_Preferences/',usuariosViews.preferences)
+    path('createUser_Preferences/',usuariosViews.preferences),
+    path('listafriends/',friendsViews.listarfriends),
+    path('agregarfriends/',friendsViews.agregarBas),
+    path('buscarfriends/', friendsViews.buscarusuario, name='buscar')
 ]
