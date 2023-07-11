@@ -1,6 +1,54 @@
 {% extends 'usuariosBase.html' %}
 
 {% block content %}
+{% load static %}
+<div class="col-md-6">
+    <div id="loginForm" class="card">
+        <div class="card-body">
+            <h1 class="text-center">User Profile Picture</h1>
+            <p class="text-center text-muted">Select a picture for your profile</p>
 
+            <form action="/createUser_profilePicture/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row justify-content-center">
 
+                    <!-- Create an input file for the user to upload the profile picture -->
+                    <input type="file" class="form-control" id="profilePic" name="profilePic" accept="image/*">
+
+                </div>
+
+                <div class="row justify-content-center" style="margin-top: 15px;">
+                    <div class="col-md-6 text-center">
+                        <img src="{% static 'shared_images/user_default.webp' %}" alt="" class="rounded-circle"
+                            id="profileImage" name="profileImage"
+                            style="height: 250px; width: 250px; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div class="row justify-content-center" style="margin-top: 25px;">
+                    <div class="col-md-2">
+
+                        <button class="btn btn-outline-primary">Create User</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const fileEl = document.getElementById('profilePic');
+
+    fileEl.addEventListener('change', () => {
+
+        const fr = new FileReader();
+        fr.readAsDataURL(fileEl.files[0]);
+
+        fr.addEventListener('load', () => {
+            const url = fr.result;
+            document.getElementById('profileImage').src = url;
+        })
+    })
+
+</script>
 {% endblock %}

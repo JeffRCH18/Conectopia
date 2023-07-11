@@ -7,7 +7,7 @@
         <div class="card-body">
             <h1 class="text-center">User Preferences</h1>
             <p class="text-center text-muted">Select your preferences</p>
-            <form action="/createUser/" method="POST">
+            <form action="/createUser_Preferences/" method="POST">
                 {% csrf_token %}
                 <div class="row justify-content-center">
 
@@ -15,8 +15,8 @@
 
                     {% for preference in preferences %}
                     <div class="col-md-3 text-center" style="margin-top: 10px;">
-                        <input type="checkbox" class="btn-check" id="btn-check-outlined_'{{ preference.gusto }}'" autocomplete="off">
-                        <label class="btn btn-outline-secondary" style="width: 70%;" for="btn-check-outlined_'{{ preference.gusto }}'">{{ preference.gusto }}</label><br>
+                        <input type="checkbox" class="btn-check" id="{{ preference.pk }}" autocomplete="off" name = "preferences" value ="{{ preference.pk }}" >
+                        <label class="btn btn-outline-secondary" style="width: 70%;" for="{{ preference.pk }}">{{ preference.gusto }}</label><br>
                     </div>
                     {% endfor %}
 

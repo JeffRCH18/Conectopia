@@ -22,11 +22,17 @@ from friends import views as friendsViews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',usuariosViews.login),
-    path('createUser/',usuariosViews.createUser),
     path('login/',usuariosViews.login),
+<<<<<<< Updated upstream
     path('userConfiguration/',usuariosViews.userConfiguration),
     path('createUser_Preferences/',usuariosViews.preferences),
     path('listafriends/',friendsViews.listarfriends),
     path('agregarfriends/',friendsViews.agregarBas),
     path('buscarfriends/', friendsViews.buscarusuario, name='buscar')
+=======
+    path('createUser/',usuariosViews.createUser),
+    path('createUser_Preferences/',usuariosViews.preferences),
+    path('createUser_profilePicture/',usuariosViews.profilePic),
+    path('userConfiguration/',usuariosViews.userConfiguration)
+>>>>>>> Stashed changes
 ]

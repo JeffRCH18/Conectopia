@@ -3,9 +3,15 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 
+#Data manipulation
+import json
+from bson import json_util
+from bson import ObjectId
+
 #Import models related to Django
 from usuarios.models import Usuarios
 from usuarios.models import Gustos
+from usuarios.models import GustosUsuarios
 
 # Create your views here.
 def login (request):
@@ -82,6 +88,8 @@ def createUser(request):
 
             user.save()
 
+            request.session['userID'] = json.loads(json_util.dumps(user.pk))
+
             return redirect(preferences)
         
         else:
@@ -92,9 +100,35 @@ def createUser(request):
 def preferences(request):
     if request.method == "GET":
 
+        #Get the full list of possible preferences that the user could select. 
         context = {'preferences' : Gustos.objects.all()}
 
+        #Return the list with the information of the table. 
         return render(request,'createUser_preferences.html',context)
+
+    if request.method == "POST": 
+
+        #Get the selected values for the user and the user id
+        preferences = request.POST.getlist('preferences')
+        userID = request.session['userID']
+        userID = userID['$oid']
+
+        user = Usuarios.objects.get(pk = ObjectId(userID))   
+
+        #Navigate for each selected item and create a new line in the database. 
+        for preference in preferences:
+
+            preferenceDB = Gustos.objects.filter(_id = ObjectId(preference)).first()
+
+            preferenceUserDB = GustosUsuarios(
+                idUsuario = user,
+                idGusto = preferenceDB
+            )
+
+            preferenceUserDB.save()
+        
+        return redirect(profilePic)
+
 
 def profilePic(request):
 
@@ -103,3 +137,28 @@ def profilePic(request):
         return render(request,'createUser_profilePic.html',{
             'documentTitle':'Create User - ProfilePic'
         })
+    
+    if request.method == 'POST':
+
+        #Recover user information
+        userID = request.session['userID']
+        userID = userID['$oid']
+
+        #Recover the image
+        image = request.FILES['profilePic']
+
+        #Create the path where the image is going to be store
+        path = 'social_media\static_shared\shared_images\profilepic_' + userID + '.png'
+
+        #Store the image in the selected folder
+        with open(path, 'wb+') as destination:
+            for chunk in image.chunks():
+                destination.write(chunk)
+
+        #Add the new path to the user information in the database
+        user = Usuarios.objects.get(pk = ObjectId(userID))
+        user.imagen = 'shared_images/profilepic_' + userID + '.png'   
+        user.save()
+
+        
+        return render(request, 'success.html')
