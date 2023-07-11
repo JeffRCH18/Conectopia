@@ -23,7 +23,7 @@
                             <div class="row justify-content-center" style="background-color: transparent">
                                 <div class="col-xl-6"
                                     style="margin-top: 10px; margin-bottom: 10px; background-color: transparent;">
-                                    <img src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
+                                    <img src='{% static user.imagen %}'
                                         alt="profilepic" class="rounded-circle img-fluid"
                                         style="object-fit: cover; width: 100%; height: 150px">
                                 </div>
@@ -34,7 +34,7 @@
                             <!-- User Name -->
                             <div class="row justify-content-center bg-white text-muted">
                                 <p class="bg-white text-muted text-center">
-                                    Cristopher Morales Fernández <br>
+                                    {{ user.nombre}} <br>
                                     Data Science
                                 </p>
                             </div>
@@ -75,13 +75,14 @@
                                 <div class="row bg-white" style="margin-top: 50px; margin-left: 10px;"><img
                                         src="{% static 'images/Preferences icon.png' %}" alt="Home"
                                         class="iconStyle">Preferences</div>
-                                <div class="row justify-content-center bg-white"
-                                    style="margin-top: 40px; border-top: 0.1rem solid gainsboro;">
-                                    <div class="col-4 bg-white" style="margin-top: 10px;">
-                                        <a href="" class="bg-white">View Profile</a>
-                                    </div>
+                            </div>
+                            <div class="row justify-content-center bg-white"
+                                style="margin-top: 40px; border-top: 0.1rem solid gainsboro;">
+                                <div class="col-4 bg-white" style="margin-top: 10px;">
+                                    <a href="" class="bg-white">View Profile</a>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

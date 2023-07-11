@@ -37,11 +37,9 @@ def login (request):
                 })
             else:
 
-                request.session['userName'] = userDB.nombre
+                request.session['userID'] = json.loads(json_util.dumps(userDB.pk))
 
-                return render(request,'userConfiguration.html',{
-                    'documentTitle':'User Configuration'
-                })
+                return redirect(userConfiguration)
         except Exception as e:
             print(e)
             return render(request, 'login.html',{
@@ -53,8 +51,15 @@ def userConfiguration(request):
 
     #Execute when the page is going to be load
     if request.method == 'GET':
+
+        #Get the user that is log in the web page
+        userID = request.session['userID']
+        userID = userID['$oid']
+        user = Usuarios.objects.get(pk = ObjectId(userID))   
+
         return render(request,'userConfiguration.html',{
-            'documentTitle':'User Configuration'
+            'documentTitle':'User Configuration',
+            'user':user
         })
 
 def createUser(request):
@@ -128,7 +133,6 @@ def preferences(request):
             preferenceUserDB.save()
         
         return redirect(profilePic)
-
 
 def profilePic(request):
 

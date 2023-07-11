@@ -6,13 +6,13 @@
 
 <form action="" class="bg-white">
     <label for="txtFullName" class="bg-white" style="margin-top: 25px;">Full Name</label>
-    <input style="margin-top: 5px;" type="text" name="txtFullName" id="txtFullName" placeholder="replace with user name"
+    <input style="margin-top: 5px;" type="text" name="txtFullName" id="txtFullName" value = "{{ user.nombre }}"
         class="form-control bg-white">
     <label for="txtEmail" class="bg-white" style="margin-top: 50px;">Email</label>
-    <input style="margin-top: 5px;" type="text" name="txtEmail" id="txtEmail" placeholder="replace with user email"
+    <input style="margin-top: 5px;" type="text" name="txtEmail" id="txtEmail" value = " {{ user.correo }}"
         class="form-control bg-white">
     <label for="txtDate" class="bg-white" style="margin-top: 50px;">Date of Birth</label>
-    <input style="margin-top: 5px;" type="date" name="txtDate" id="txtDate" placeholder="replace with date" class="form-control bg-white">
+    <input style="margin-top: 5px;" type="date" name="txtDate" id="txtDate" value = "{{ user.fecha_nacimiento }}" class="form-control bg-white">
     <label for="txtDescription" class="bg-white" style="margin-top: 50px;">Who are you?</label>
     <input style="margin-top: 5px;" type="text" name="txtDescription" id="txtDescription" placeholder="replace with user description"
         class="form-control bg-white">
