@@ -61,6 +61,20 @@ def userConfiguration(request):
             'documentTitle':'User Configuration',
             'user':user
         })
+    
+    if request.method == 'POST':
+        
+        #Recover the User for the session variables. 
+        userID = request.session['userID']
+        userID = userID['$oid']
+        user = Usuarios.objects.get(pk = ObjectId(userID))
+
+        #Modify the user information with the name of the users. 
+        user.nombre = request.POST.get('txtFullName')
+        user.correo = request.POST.get('txtEmail')
+        user.user_description = request.POST.get('txtDescription')
+        user.save
+
 
 def createUser(request):
     #Load the page when the user press the create user button. 
@@ -87,6 +101,7 @@ def createUser(request):
                 nombre = txtFullName,
                 correo = txtEmail,
                 fecha_nacimiento = txtDate,
+                user_description = txtDescription,
                 imagen = None,
                 contrasenna = txtPassword
             )
@@ -165,4 +180,4 @@ def profilePic(request):
         user.save()
 
         
-        return render(request, 'success.html')
+        return redirect(userConfiguration)

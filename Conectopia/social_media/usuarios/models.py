@@ -7,6 +7,7 @@ class Usuarios(models.Model):
     nombre = models.CharField(max_length=500)
     correo = models.CharField(max_length=500)
     fecha_nacimiento = models.DateField(default=datetime.date.today)
+    user_description = models.CharField(max_length=500,default='new user')
     imagen = models.CharField(max_length=500)
     contrasenna = models.CharField(max_length=500)
 

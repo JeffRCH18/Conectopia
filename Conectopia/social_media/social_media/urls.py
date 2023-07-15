@@ -31,5 +31,4 @@ urlpatterns = [
     path('createUser/',usuariosViews.createUser),
     path('createUser_Preferences/',usuariosViews.preferences),
     path('createUser_profilePicture/',usuariosViews.profilePic),
-    path('userConfiguration/',usuariosViews.userConfiguration)
 ]
