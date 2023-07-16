@@ -73,7 +73,9 @@ def userConfiguration(request):
         user.nombre = request.POST.get('txtFullName')
         user.correo = request.POST.get('txtEmail')
         user.user_description = request.POST.get('txtDescription')
-        user.save
+        user.save()
+
+        return redirect(userConfiguration)
 
 
 def createUser(request):
