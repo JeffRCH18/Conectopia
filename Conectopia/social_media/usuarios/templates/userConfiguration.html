@@ -5,15 +5,16 @@
 <h4 class="bg-white">User Configuration</h4>
 
 <form action="/userConfiguration/" method="POST" class="bg-white">
+    {% csrf_token %}
     <label for="txtFullName" class="bg-white" style="margin-top: 25px;">Full Name</label>
-    <input style="margin-top: 5px;" type="text" name="txtFullName" id="txtFullName" value = "{{ user.nombre }}"
+    <input style="margin-top: 5px;" type="text" name="txtFullName" id="txtFullName" value="{{ user.nombre }}"
         class="form-control bg-white">
     <label for="txtEmail" class="bg-white" style="margin-top: 50px;">Email</label>
-    <input style="margin-top: 5px;" type="text" name="txtEmail" id="txtEmail" value = " {{ user.correo }}"
+    <input style="margin-top: 5px;" type="text" name="txtEmail" id="txtEmail" value="{{ user.correo }}"
         class="form-control bg-white">
     <label for="txtDescription" class="bg-white" style="margin-top: 50px;">Who are you?</label>
-    <input style="margin-top: 5px;" type="text" name="txtDescription" id="txtDescription" value = "{{ user.user_description }}"
-        class="form-control bg-white">
+    <input style="margin-top: 5px;" type="text" name="txtDescription" id="txtDescription"
+        value="{{ user.user_description }}" class="form-control bg-white">
     <label for="txtImage" class="bg-white" style="margin-top: 50px;">Profile Picture</label>
     <input type="file" name="txtImage" id="txtImage" class="form-control" accept="image/*">
     <div class="row justify-content-center bg-white" style="margin-top: 50px;">
@@ -24,7 +25,50 @@
 </form>
 <div class="row justify-content-center bg-white" style="margin-top: 25px;">
     <div class="col-xl-4 bg-white">
-        <button class="btn btn-outline-primary" style="width: 100%;">Update Pasword</button>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            style="width: 100%;">
+            Update Password
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/userConfiguration/" method="PUT" class="bh-white">
+                            {% csrf_token %}
+                            <label for="txtOldPassword" style="margin-top: 10px;">Indicate Old Password</label>
+                            <input type="text" name="txtOldPassword" id="txtOldPassword" class="form-control"
+                                onchange="valitePassword('{{user.contrasenna}}')">
+                            <label for="txtNewPassword" style="margin-top: 25px;">Indicate new password</label>
+                            <input type="text" name="txtNewPassword" id="txtNewPassword" class="form-control"
+                                onchange="valitePassword('{{user.contrasenna}}')">
+                            <label for="txtPasswordConfirmation" style="margin-top: 25px;">Confirm the new
+                                password</label>
+                            <input type="text" name="txtPasswordConfirmation" id="txtPasswordConfirmation"
+                                class="form-control" onchange="valitePassword('{{user.contrasenna}}')">
+
+                            <div class="alert alert-danger" role="alert" style="margin-top: 25px;">
+                                <span class="txtError">Please complete all the information</span>
+                            </div>
+
+                            <div class="row justify-content-center" style="margin-top: 25px; display: none;" id="saveDiv">
+                                <div class="col-md-5">
+                                    <buttoon class="btn btn-outline-primary text-center">Update Password</buttoon>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <div class="row justify-content-center bg-white" style="margin-top: 25px;">
@@ -32,6 +76,9 @@
         <button class="btn btn-outline-primary" style="width: 100%;">Delete User</button>
     </div>
 </div>
+
+{% load static %}
+<script src="{% static 'js/userConfiguration.js' %}"></script>
 
 <script>
     const fileEl = document.getElementById('txtImage');
