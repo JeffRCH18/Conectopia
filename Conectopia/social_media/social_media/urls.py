@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from usuarios import views as usuariosViews
 from friends import views as friendsViews
+from home import views as homeViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +32,5 @@ urlpatterns = [
     path('createUser/',usuariosViews.createUser),
     path('createUser_Preferences/',usuariosViews.preferences),
     path('createUser_profilePicture/',usuariosViews.profilePic),
+    path('home/', homeViews.home, name='home')
 ]

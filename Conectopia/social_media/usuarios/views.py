@@ -181,3 +181,4 @@ def profilePic(request):
 
         
         return redirect(userConfiguration)
+    
