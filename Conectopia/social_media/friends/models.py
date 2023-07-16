@@ -1,7 +1,7 @@
 from djongo import models
 from usuarios.models import Usuarios
 
-# Create your models here.
+
 class Amistad(models.Model):
     _id = models.ObjectIdField() 
     user1 = models.ForeignKey(Usuarios, on_delete=models.CASCADE,related_name='following') 

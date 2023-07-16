@@ -1,19 +1,20 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse 
 from usuarios.models import Usuarios
 
 # Create your views here.
 
-def listarfriends(request):
-    return render(request,'listafriends.html')
+def listFriends(request):
+    return render(request,'listFriends.html')
 
 def agregarBas(request):
-    usuarios = Usuarios.objects.all()
-    return render(request, 'agregarfriends.html', {'usuarios_usuarios': usuarios})
+    user = Usuarios.objects.all()
+    return render(request, 'addFriends.html', {'usuarios_usuarios': user})
+    
 
-def buscarusuario(request):
-    usuarios = Usuarios.objects.all()
-    query = request.GET.get('consulta')
+def searchUser(request):
+    user = Usuarios.objects.all()
+    query = request.GET.get('query')
     if query:
-        usuarios = usuarios.filter(nombre__icontains=query)
-    return render(request, 'agregarfriends.html', {'usuarios_usuarios': usuarios})
+        user = user.filter(nombre__icontains=query)
+    return render(request, 'addFriends.html', {'usuarios_usuarios': user})

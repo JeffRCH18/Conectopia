@@ -25,10 +25,10 @@ urlpatterns = [
     path('login/',usuariosViews.login),
     path('userConfiguration/',usuariosViews.userConfiguration),
     path('createUser_Preferences/',usuariosViews.preferences),
-    path('listafriends/',friendsViews.listarfriends),
-    path('agregarfriends/',friendsViews.agregarBas),
-    path('buscarfriends/', friendsViews.buscarusuario, name='buscar'),
+    path('listFriends/',friendsViews.listFriends),
+    path('addFriends/',friendsViews.agregarBas),
+    path('searchUser/', friendsViews.searchUser, name='search'),
     path('createUser/',usuariosViews.createUser),
     path('createUser_Preferences/',usuariosViews.preferences),
-    path('createUser_profilePicture/',usuariosViews.profilePic),
+    path('createUser_profilePicture/',usuariosViews.profilePic)
 ]
