@@ -1,0 +1,41 @@
+{% extends 'appBase.html' %} 
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="search-container">
+        <img src="{% static 'images/log-usuario.png' %}" class="img-user">
+        <h1 class="text-user">Search Users</h1>
+    </div>  
+    <div class="input-container">
+        <form action="{% url 'search' %}" method="GET">
+            <input class="text-search" type="text" name="query" placeholder="Look for a user" />
+            <button type="submit" class="btn-search">Search</button>
+        </form>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body bg-white col-central">
+        {% if usuarios_usuarios %}
+        <ul class="list-friends">
+            {% for usuario in usuarios_usuarios %}
+            <li>
+                <div class="friend-item">
+                    <img src="{{ usuario.imagen }}" alt="Foto de amigo">
+                    <div class="friend-info">
+                        <h3>{{ usuario.nombre }}</h3>
+                        <span class="common-friend">1 amigo en común</span>
+                    </div>
+                    <button class="btn-add">
+                        <img src="{% static 'images/log-agregar.png' %}" style="width: 40px; height: 40px;"></img>
+                    </button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No se encontraron resultados</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
