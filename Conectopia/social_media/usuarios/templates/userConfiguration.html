@@ -4,19 +4,21 @@
 
 <h4 class="bg-white">User Configuration</h4>
 
-<form action="/userConfiguration/" method="POST" class="bg-white">
+<form action="/userConfiguration/" method="POST" class="bg-white"  enctype="multipart/form-data">
     {% csrf_token %}
     <label for="txtFullName" class="bg-white" style="margin-top: 25px;">Full Name</label>
     <input style="margin-top: 5px;" type="text" name="txtFullName" id="txtFullName" value="{{ user.nombre }}"
-        class="form-control bg-white">
+        class="form-control bg-white" required>
     <label for="txtEmail" class="bg-white" style="margin-top: 50px;">Email</label>
     <input style="margin-top: 5px;" type="text" name="txtEmail" id="txtEmail" value="{{ user.correo }}"
-        class="form-control bg-white">
+        class="form-control bg-white" required>
     <label for="txtDescription" class="bg-white" style="margin-top: 50px;">Who are you?</label>
     <input style="margin-top: 5px;" type="text" name="txtDescription" id="txtDescription"
-        value="{{ user.user_description }}" class="form-control bg-white">
+        value="{{ user.user_description }}" class="form-control bg-white" required>
+
     <label for="txtImage" class="bg-white" style="margin-top: 50px;">Profile Picture</label>
     <input type="file" name="txtImage" id="txtImage" class="form-control" accept="image/*">
+
     <div class="row justify-content-center bg-white" style="margin-top: 50px;">
         <div class="col-xl-4 bg-white">
             <button class="btn btn-outline-primary" style="width: 100%;">Save Changes</button>

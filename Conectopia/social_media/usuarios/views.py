@@ -77,10 +77,32 @@ def userConfiguration(request):
         user.nombre = request.POST.get('txtFullName')
         user.correo = request.POST.get('txtEmail')
         user.user_description = request.POST.get('txtDescription')
+
+
+        # -- Validate if the user change the profile picture and save it. --
+
+        picture_field = request.FILES.get('txtImage')
+
+        if picture_field is not None: 
+
+            #Recover the image
+            image = request.FILES['txtImage']
+        
+            #Create the path where the image is going to be store
+            path = 'social_media\static_shared\shared_images\profilepic_' + userID + '.png'
+
+            #Store the image in the selected folder
+            with open(path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+
+            user.imagen = 'shared_images/profilepic_' + userID + '.png' 
+
         user.save()
 
         return redirect(userConfiguration)
-    
+
+@session_filter_required()
 def updatePassword(request):
     if request.method == 'POST':
 
@@ -94,7 +116,8 @@ def updatePassword(request):
         user.save()
 
         return redirect(userConfiguration)
-    
+
+@session_filter_required()
 def deleteUser(request):
     if request.method == 'POST':
         
@@ -109,6 +132,7 @@ def deleteUser(request):
 
         return redirect(login)
 
+@session_filter_required()
 def createUser(request):
     #Load the page when the user press the create user button. 
     if request.method == 'GET':
@@ -149,7 +173,8 @@ def createUser(request):
             return render(request,'createUser.html',{
                 'notification':'The password confirmation does not match'
             })
-        
+
+@session_filter_required()
 def preferences(request):
     if request.method == "GET":
 
@@ -182,6 +207,7 @@ def preferences(request):
         
         return redirect(profilePic)
 
+@session_filter_required()
 def profilePic(request):
 
     #Execute when the page is going to be load
@@ -214,4 +240,8 @@ def profilePic(request):
 
         
         return redirect(userConfiguration)
-    
+
+@session_filter_required()
+def closeSession(request):
+    request.session.clear()
+    return redirect(login)

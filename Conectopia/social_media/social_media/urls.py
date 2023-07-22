@@ -21,8 +21,8 @@ from friends import views as friendsViews
 from home import views as homeViews
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('',usuariosViews.login),
+    path('admin/', admin.site.urls),
     path('login/',usuariosViews.login),
     path('userConfiguration/',usuariosViews.userConfiguration),
     path('createUser_Preferences/',usuariosViews.preferences),
@@ -31,15 +31,10 @@ urlpatterns = [
     path('searchUser/', friendsViews.searchUser, name='search'),
     path('createUser/',usuariosViews.createUser),
     path('createUser_Preferences/',usuariosViews.preferences),
-<<<<<<< HEAD
     path('createUser_profilePicture/',usuariosViews.profilePic),
-<<<<<<< Updated upstream
-    path('home/', homeViews.home, name='home')
-=======
-    path('createUser_profilePicture/',usuariosViews.profilePic)
->>>>>>> 7d43a5c3e5087fbf9cbca55634048067c38f4731
-=======
+    path('home/', homeViews.home, name='home'),
+    path('createUser_profilePicture/',usuariosViews.profilePic),
     path('updatePassword/',usuariosViews.updatePassword),
-    path('deleteUser/',usuariosViews.deleteUser)
->>>>>>> Stashed changes
+    path('deleteUser/',usuariosViews.deleteUser),
+    path('closeSession/',usuariosViews.closeSession)
 ]
