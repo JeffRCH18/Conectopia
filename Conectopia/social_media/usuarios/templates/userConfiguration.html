@@ -41,7 +41,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/userConfiguration/" method="PUT" class="bh-white">
+                        <form action="/updatePassword/" method="POST" class="bh-white">
                             {% csrf_token %}
                             <label for="txtOldPassword" style="margin-top: 10px;">Indicate Old Password</label>
                             <input type="text" name="txtOldPassword" id="txtOldPassword" class="form-control"
@@ -54,13 +54,13 @@
                             <input type="text" name="txtPasswordConfirmation" id="txtPasswordConfirmation"
                                 class="form-control" onchange="valitePassword('{{user.contrasenna}}')">
 
-                            <div class="alert alert-danger" role="alert" style="margin-top: 25px;">
-                                <span class="txtError">Please complete all the information</span>
+                            <div class="alert alert-danger" role="alert" style="margin-top: 25px;" id="errorAlert">
+                                <span id="txtError">Please complete all the information</span>
                             </div>
-
-                            <div class="row justify-content-center" style="margin-top: 25px; display: none;" id="saveDiv">
+                            <div class="row justify-content-center" style="margin-top: 25px; display: none;"
+                                id="saveDiv">
                                 <div class="col-md-5">
-                                    <buttoon class="btn btn-outline-primary text-center">Update Password</buttoon>
+                                    <button class="btn btn-outline-primary text-center">Update Password</button>
                                 </div>
                             </div>
                         </form>
@@ -73,7 +73,10 @@
 </div>
 <div class="row justify-content-center bg-white" style="margin-top: 25px;">
     <div class="col-xl-4 bg-white">
-        <button class="btn btn-outline-primary" style="width: 100%;">Delete User</button>
+        <form action="/deleteUser/" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-outline-primary" style="width: 100%;">Delete User</button>
+        </form>
     </div>
 </div>
 

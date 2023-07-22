@@ -33,8 +33,13 @@ urlpatterns = [
     path('createUser_Preferences/',usuariosViews.preferences),
 <<<<<<< HEAD
     path('createUser_profilePicture/',usuariosViews.profilePic),
+<<<<<<< Updated upstream
     path('home/', homeViews.home, name='home')
 =======
     path('createUser_profilePicture/',usuariosViews.profilePic)
 >>>>>>> 7d43a5c3e5087fbf9cbca55634048067c38f4731
+=======
+    path('updatePassword/',usuariosViews.updatePassword),
+    path('deleteUser/',usuariosViews.deleteUser)
+>>>>>>> Stashed changes
 ]

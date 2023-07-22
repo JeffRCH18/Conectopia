@@ -13,6 +13,9 @@ from usuarios.models import Usuarios
 from usuarios.models import Gustos
 from usuarios.models import GustosUsuarios
 
+#Import decoratorsfrom decorators import session_filter_required
+from usuarios.decorators import session_filter_required
+
 # Create your views here.
 def login (request):
     #Execute when the page is going to be load 
@@ -47,6 +50,7 @@ def login (request):
                 'notification':'User ' + txtUser + ' not found'
             })
 
+@session_filter_required()
 def userConfiguration(request):
 
     #Execute when the page is going to be load
@@ -76,7 +80,34 @@ def userConfiguration(request):
         user.save()
 
         return redirect(userConfiguration)
+    
+def updatePassword(request):
+    if request.method == 'POST':
 
+        #Recover the User for the session variables. 
+        userID = request.session['userID']
+        userID = userID['$oid']
+        user = Usuarios.objects.get(pk = ObjectId(userID))
+
+        #Modifyt the user password
+        user.contrasenna = request.POST.get('txtNewPassword')
+        user.save()
+
+        return redirect(userConfiguration)
+    
+def deleteUser(request):
+    if request.method == 'POST':
+        
+        #Recover the User for the session variables. 
+        userID = request.session['userID']
+        userID = userID['$oid']
+        user = Usuarios.objects.get(pk = ObjectId(userID))
+
+        #Delete the user
+        user.delete()
+        del request.session['userID']
+
+        return redirect(login)
 
 def createUser(request):
     #Load the page when the user press the create user button. 

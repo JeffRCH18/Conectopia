@@ -7,7 +7,7 @@ class Amistad(models.Model):
     user1 = models.ForeignKey(Usuarios, on_delete=models.CASCADE,related_name='following') 
     user2 = models.ForeignKey(Usuarios, on_delete=models.CASCADE,related_name='follower') 
 
-class Friendship(models.Model):
+class Solicitud(models.Model):
     _id = models.ObjectIdField()
     Id_emisor = models.ForeignKey(Usuarios, on_delete=models.CASCADE,related_name='emisor')
     Id_receptor= models.ForeignKey(Usuarios, on_delete=models.CASCADE,related_name='receptor')
