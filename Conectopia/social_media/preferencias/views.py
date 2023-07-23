@@ -10,6 +10,7 @@ from bson import json_util
 from usuarios.models import GustosUsuarios
 from usuarios.models import Usuarios
 from usuarios.models import Gustos
+from django.db import models
 
 # Create your views here.
 def preferenceList(request):
@@ -21,9 +22,10 @@ def preferenceList(request):
         userID = userID['$oid']
         user = Usuarios.objects.get(pk = ObjectId(userID))
 
-        userPreferences = GustosUsuarios.objects.filter(idUsuario_id = userID)
+        userPreferences = GustosUsuarios.objects.filter(idUsuario_id = ObjectId(userID)).values('idGusto').annotate(count=models.Count('idUsuario'))
 
         return render (request,'preferenceList.html',{
             'documentTitle':'Preference List',
-            preferenceList : userPreferences
+            'preferenceList' : userPreferences,
+            'user':user
         })

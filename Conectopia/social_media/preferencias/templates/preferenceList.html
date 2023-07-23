@@ -4,14 +4,11 @@
 
 <h4 class="bg-white">User Preferences</h4>
 
-<ul>
 
-{% for prefernece in  preferenceList %}
+    {% for preference in preferenceList %}
 
-    <li>{{ prefernece.idGusto.gusto}}</li>
+    <p>{{ preference.idGusto.gusto}}</p>
 
-{% endfor %}
-
-</ul>
+    {% endfor %}
 
 {% endblock %}
