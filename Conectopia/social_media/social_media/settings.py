@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import certifi
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios',
-    'friends'
+    'friends',
+    'preferencias'
 ]
 
 MIDDLEWARE = [
@@ -80,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'CLIENT': {
-            "host":"mongodb+srv://crismf2704:Cris270497@socialmedia.yyrqbr5.mongodb.net/?retryWrites=true&w=majority",
-            "name":"red_social",
+            "host":"mongodb+srv://crismf2704:Cris270497@socialmedia.yyrqbr5.mongodb.net/",
+            "name":"red_social", 
             "authMechanism":"SCRAM-SHA-1"
         }
     }

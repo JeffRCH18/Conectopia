@@ -132,7 +132,6 @@ def deleteUser(request):
 
         return redirect(login)
 
-@session_filter_required()
 def createUser(request):
     #Load the page when the user press the create user button. 
     if request.method == 'GET':

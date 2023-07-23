@@ -19,6 +19,7 @@ from django.urls import path
 from usuarios import views as usuariosViews
 from friends import views as friendsViews
 from home import views as homeViews
+from preferencias import views as preferenceViews
 
 urlpatterns = [
     path('',usuariosViews.login),
@@ -36,5 +37,6 @@ urlpatterns = [
     path('createUser_profilePicture/',usuariosViews.profilePic),
     path('updatePassword/',usuariosViews.updatePassword),
     path('deleteUser/',usuariosViews.deleteUser),
-    path('closeSession/',usuariosViews.closeSession)
+    path('closeSession/',usuariosViews.closeSession),
+    path('preferenceList/',preferenceViews.preferenceList)
 ]

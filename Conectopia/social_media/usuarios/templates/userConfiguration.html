@@ -46,15 +46,15 @@
                         <form action="/updatePassword/" method="POST" class="bh-white">
                             {% csrf_token %}
                             <label for="txtOldPassword" style="margin-top: 10px;">Indicate Old Password</label>
-                            <input type="text" name="txtOldPassword" id="txtOldPassword" class="form-control"
-                                onchange="valitePassword('{{user.contrasenna}}')">
+                            <input type="password" name="txtOldPassword" id="txtOldPassword" class="form-control"
+                                onchange="valitePassword('{{user.contrasenna}}')" required>
                             <label for="txtNewPassword" style="margin-top: 25px;">Indicate new password</label>
-                            <input type="text" name="txtNewPassword" id="txtNewPassword" class="form-control"
-                                onchange="valitePassword('{{user.contrasenna}}')">
+                            <input type="password" name="txtNewPassword" id="txtNewPassword" class="form-control"
+                                onchange="valitePassword('{{user.contrasenna}}')" required>
                             <label for="txtPasswordConfirmation" style="margin-top: 25px;">Confirm the new
                                 password</label>
-                            <input type="text" name="txtPasswordConfirmation" id="txtPasswordConfirmation"
-                                class="form-control" onchange="valitePassword('{{user.contrasenna}}')">
+                            <input type="password" name="txtPasswordConfirmation" id="txtPasswordConfirmation"
+                                class="form-control" onchange="valitePassword('{{user.contrasenna}}')" required>
 
                             <div class="alert alert-danger" role="alert" style="margin-top: 25px;" id="errorAlert">
                                 <span id="txtError">Please complete all the information</span>
