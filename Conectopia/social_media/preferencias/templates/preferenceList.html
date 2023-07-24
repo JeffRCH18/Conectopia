@@ -1,0 +1,67 @@
+{% extends 'applicationBase.html' %}
+
+{% block content %}
+
+<h4 class="bg-white">User Preferences</h4>
+
+<div class="row">
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        style="width: 100%;">
+        Create new preference
+    </button>
+</div>
+
+{% for preference in  preferenceList %}
+
+    <div class="row" style="margin-top: 25px;">
+        <div class="col-md-6">
+            <h4>{{ preference.gusto }}</h4>
+            <p class="text-muted">Total Followers: {{ preference.idUsuario_id }}</p>
+        </div>
+        <div class="col-md-6 justify-content-center">
+            {% if preference.is_User == 1 %}
+                <form action="/deletePreference/" method="POST" class="bh-white">
+                {% csrf_token %}
+                    <input type="text" id="preferenceID" name="preferenceID" value="{{preference.gustoID}}" style="display: none;">
+                    <button class="btn btn-outline-primary">Delete</button>
+                </form>
+            {% else %}
+            <form action="/addPreference/" method="POST" class="bh-white">
+                {% csrf_token %}
+                    <input type="text" id="preferenceID" name="preferenceID" value="{{preference.gustoID}}" style="display: none;">
+                    <button class="btn btn-outline-primary">Add</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+{% endfor %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create new preference</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/createNewPreference/" method="POST" class="bh-white">
+                    {% csrf_token %}
+                    <label for="txtNewPreference" style="margin-top: 10px;">Indicate new preference name</label>
+                    <input type="text" name="txtNewPreference" id="txtNewPreference" class="form-control"
+                        onchange="valitePassword('{{user.contrasenna}}')" required>
+                    <div class="row justify-content-center" style="margin-top: 25px;"
+                        id="saveDiv">
+                        <div class="col-md-5">
+                            <button class="btn btn-outline-primary text-center">Create Preference</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
