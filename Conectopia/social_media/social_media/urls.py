@@ -28,7 +28,6 @@ urlpatterns = [
     path('userConfiguration/',usuariosViews.userConfiguration),
     path('createUser_Preferences/',usuariosViews.preferences),
     path('listFriends/',friendsViews.listFriends),
-    path('addFriends/',friendsViews.agregarBas),
     path('searchUser/', friendsViews.searchUser, name='search'),
     path('createUser/',usuariosViews.createUser),
     path('createUser_Preferences/',usuariosViews.preferences),
@@ -41,5 +40,8 @@ urlpatterns = [
     path('preferenceList/',preferenceViews.preferenceList),
     path('deletePreference/',preferenceViews.eliminatePreference),
     path('addPreference/',preferenceViews.createPreference),
-    path('createNewPreference/',preferenceViews.createNewPreference)
+    path('createNewPreference/',preferenceViews.createNewPreference),
+    path('show_requests/', friendsViews.show_requests, name='show_requests'),
+    path('add_request/', friendsViews.add_request, name='add_request'),
+    path('delete_accept_request/', friendsViews.delete_accept_request, name='delete_accept_request')
 ]

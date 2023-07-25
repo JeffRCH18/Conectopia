@@ -63,11 +63,16 @@ body{
     padding: 0;
 }
 
+
 .friend-item {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    background-color: #DFDEEF;
 }
+
+
+
 
 .friend-item img {
     width: 50px;
@@ -172,4 +177,14 @@ body{
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.button-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    margin-left: 250px;
+    margin-top: 5px;
+    margin-right: 9px;
+    margin-bottom: -5px;
 }

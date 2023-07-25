@@ -1,0 +1,55 @@
+{% extends 'appBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body bg-white col-central">
+        <div class="search-container">
+            <img src="{% static 'images/log-lista.png' %}" class="img-list">
+            <h1 class="text-user">Solicitudes de amistad pendientes</h1>
+        </div>
+    </div>
+    <div class="card-body bg-white col-central">
+        {% if friends_solicitud %}
+        <ul class="list-friends">
+            {% for solicitud in friends_solicitud %}
+            <li>
+                <form action="{% url 'delete_accept_request' %}" method="POST">
+                    <div class="friend-item">
+                        <img src="{{ solicitud.Id_emisor.imagen }}" alt="Foto de amigo">
+                        <div class="friend-info">
+                            <h3>{{ solicitud.Id_emisor.nombre }}</h3>
+                            <span class="common-friend">1 amigo en común</span>
+                        </div>
+                        <div class="button-container">
+                            {% csrf_token %}
+                            <input type="hidden" name="solicitud_id" value="{{ solicitud.pk }}">
+                            <button type="submit" class="btn btn-danger" name="accion" value="eliminar">Eliminar</button>
+                            <button type="submit" class="btn btn-success" name="accion" value="aceptar">Aceptar</button>
+                        </div>
+                    </div>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No tienes solicitudes de amistad pendientes.</p>
+        {% endif %}
+    </div>
+</div>
+<script>
+    {% if messages %}
+        {% for message in messages %}
+            Swal.fire({
+                icon: 'success',
+                title: 'Friend Request Sent!',
+                text: "{{ message }}",
+                showConfirmButton: false,
+                timer: 3000  // Change the time (in milliseconds) you want the notification to show
+            });
+        {% endfor %}
+    {% endif %}
+</script>
+{% endblock %}
+
+

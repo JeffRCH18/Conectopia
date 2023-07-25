@@ -1,4 +1,4 @@
-{% extends 'appBase.html' %} 
+{% extends 'appBase.html' %}
 {% load static %}
 {% block content %}
 <div class="container">
@@ -19,16 +19,21 @@
         <ul class="list-friends">
             {% for usuario in usuarios_usuarios %}
             <li>
-                <div class="friend-item">
-                    <img src="{{ usuario.imagen }}" alt="Foto de amigo">
-                    <div class="friend-info">
-                        <h3>{{ usuario.nombre }}</h3>
-                        <span class="common-friend">1 amigo en común</span>
+                <form action="{% url 'add_request' %}" method="POST" id="form-{{ usuario.pk }}">
+                    <div class="friend-item">
+                        <img src="{{ usuario.imagen }}" alt="Foto de amigo">
+                        <div class="friend-info">
+                            <h3>{{ usuario.nombre }}</h3>
+                            <span class="common-friend">1 amigo en común</span>
+                        </div>
+                        {% csrf_token %}
+                        <input type="hidden" name="receptor_id" value="{{ usuario.pk }}">
+                        <span class="tt">{{usuario.pk}}</span>
+                        <button type="submit" class="btn-add">
+                            <img src="{% static 'images/log-agregar.png' %}" style="width: 40px; height: 40px;">
+                        </button>
                     </div>
-                    <button class="btn-add">
-                        <img src="{% static 'images/log-agregar.png' %}" style="width: 40px; height: 40px;"></img>
-                    </button>
-                </div>
+                </form>
             </li>
             {% endfor %}
         </ul>
@@ -37,5 +42,19 @@
         {% endif %}
     </div>
 </div>
-{% endblock %}
+{% if request.session.solicitud_enviada %}
+<script>
+    function showSweetAlert() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Friend Request Sent!',
+            text: 'Solicitud enviada correctamente.',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    }
+    showSweetAlert();
+</script>
+{% endif %}
 
+{% endblock %}
