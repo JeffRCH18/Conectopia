@@ -1,4 +1,4 @@
-{% extends 'appBase.html' %} 
+{% extends 'appBase.html' %}
 {% load static %}
 {% block content %}
 <div class="container">
@@ -7,10 +7,10 @@
         <h1 class="text-user">Search Users</h1>
     </div>  
     <div class="input-container">
-        <form action="{% url 'search' %}" method="GET">
-            <input class="text-search" type="text" name="query" placeholder="Look for a user" />
-            <button type="submit" class="btn-search">Search</button>
-        </form>
+        <form action="{% url 'search' %}" method="GET" autocomplete="off">
+            <input type="search" class="text-search" name="buscar_query" placeholder="Buscar usuario" autocomplete="false"/>
+            <button type="submit" class="btn-search">Buscar</button>
+          </form>
     </div>
 </div>
 <div class="card">
@@ -19,16 +19,20 @@
         <ul class="list-friends">
             {% for usuario in usuarios_usuarios %}
             <li>
-                <div class="friend-item">
-                    <img src="{{ usuario.imagen }}" alt="Foto de amigo">
-                    <div class="friend-info">
-                        <h3>{{ usuario.nombre }}</h3>
-                        <span class="common-friend">1 amigo en común</span>
+                <form action="{% url 'add_request' %}" method="POST" id="form-{{ usuario.pk }}">
+                    <div class="friend-item">
+                        <img src="{{ usuario.imagen }}" alt="Foto de amigo">
+                        <div class="friend-info">
+                            <h3>{{ usuario.nombre }}</h3>
+                            <span class="common-friend">1 amigo en común</span>
+                        </div>
+                        {% csrf_token %}
+                        <input type="hidden" name="receptor_id" value="{{ usuario.pk }}">
+                        <button type="submit" class="btn-add add-friend-btn">
+                            <img src="{% static 'images/log-agregar.png' %}" style="width: 40px; height: 40px;">
+                        </button>
                     </div>
-                    <button class="btn-add">
-                        <img src="{% static 'images/log-agregar.png' %}" style="width: 40px; height: 40px;"></img>
-                    </button>
-                </div>
+                </form>
             </li>
             {% endfor %}
         </ul>
@@ -37,5 +41,61 @@
         {% endif %}
     </div>
 </div>
-{% endblock %}
+<script>
+    $(document).ready(function() {
+        $('.add-friend-btn').click(function(event) {
+            event.preventDefault();
+            var form = $(this).closest('form');
+            var url = form.attr('action');
+            var formData = form.serialize();
 
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Remover el botón de "Agregar"
+                        form.find('.add-friend-btn').remove();
+                        // Mostrar texto "Pendiente"
+                        form.find('.friend-info').append('<span class="btn-addd">Pendiente</span>');
+                        showSweetAlert('success', 'Friend Request Sent!', 'Solicitud enviada correctamente.');
+                    } else {
+                        showSweetAlert('error', 'Error', 'Ya se le ha enviado una solicitud a este usuario.');
+                    }
+                },
+                error: function() {
+                    showSweetAlert('error', 'Error', 'Hubo un error al enviar la solicitud.');
+                }
+            });
+        });
+    });
+ 
+    function showSweetAlert(icon, title, text) {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            showConfirmButton: false,
+            timer: 3000
+        });
+    }
+    </script>
+    <script>
+        $(".btn-search").on("click", function() {
+            const query = $(".text-search").val();
+            $.ajax({
+                url: "{% url 'search' %}",
+                method: "GET",
+                data: { query: query },
+                success: function(data) {
+                    $(".list-friends").html(data);
+                },
+                error: function(error) {
+                    console.error("Error al buscar usuarios: ", error);
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -10,6 +10,7 @@ class Usuarios(models.Model):
     user_description = models.CharField(max_length=500,default='new user')
     imagen = models.CharField(max_length=500)
     contrasenna = models.CharField(max_length=500)
+    
 
 class Gustos(models.Model):
     _id = models.ObjectIdField()
