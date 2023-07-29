@@ -1,4 +1,3 @@
-
 {% extends 'appBase.html' %} 
 {% load static %}
 {% block content %}
@@ -10,11 +9,12 @@
     </div>
     <div class="container-list">
       <ul class="list-friends">
+        {% for amigo in amistad %}
         <li>
           <div class="friend-item">
-            <img src="ruta-de-la-imagen" alt="Foto de amigo" style="width: 40px; height: 40px;">
+            <img src="{{ amigo.imagen }}" alt="Foto de amigo" style="width: 40px; height: 40px;">
             <div class="friend-info">
-              <h3>ggggggg</h3>
+              <h3>{{ amigo.nombre}}</h3>
               <span class="common-friend">1 amigo en común</span>
             </div>
             <button class="btn-add">
@@ -22,6 +22,7 @@
             </button>
           </div>
         </li>
+        {% endfor %}
       </ul>
     </div>
   </div>
