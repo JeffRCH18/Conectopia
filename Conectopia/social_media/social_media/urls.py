@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from Conectopia.social_media.home.views import PublicacionListView
+
 from usuarios import views as usuariosViews
 from friends import views as friendsViews
 from preferencias import views as preferenceViews
@@ -32,7 +32,6 @@ urlpatterns = [
     path('createUser/',usuariosViews.createUser),
     path('createUser_Preferences/',usuariosViews.preferences),
     path('createUser_profilePicture/',usuariosViews.profilePic),
-    path('home/', PublicacionListView.as_view(), name='home'),
     path('createUser_profilePicture/',usuariosViews.profilePic),
     path('updatePassword/',usuariosViews.updatePassword),
     path('deleteUser/',usuariosViews.deleteUser),

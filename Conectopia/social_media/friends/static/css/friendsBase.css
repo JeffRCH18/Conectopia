@@ -33,6 +33,25 @@ body{
     position: relative;
 }
 
+.btn-addd{
+    display: inline-block;
+    background-color:#D0CECD  ; /* Color de fondo del botón */
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #040404  ; /* Color del texto del botón */
+    margin-bottom: 15px;
+    margin-top: -30px;
+    padding: 5px 5px;
+    text-decoration: none; /* Sin subrayado */
+    margin-left: 450px;
+    position: relative;
+}
+
+
+
+
+
+
 .navbar-friends{
     color:black;
     padding-top: 15px;
@@ -121,6 +140,8 @@ body{
     border-style: none;
     text-align: center;
 }
+
+
 
 .text-search{
     margin-top: 8px;
