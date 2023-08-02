@@ -16,6 +16,9 @@ from usuarios.models import GustosUsuarios
 #Import decoratorsfrom decorators import session_filter_required
 from usuarios.decorators import session_filter_required
 
+#Import data related to the user
+import usuarios.loadStadistics as ls
+
 # Create your views here.
 def login (request):
     #Execute when the page is going to be load 
@@ -32,7 +35,8 @@ def login (request):
 
         try: 
             userDB = Usuarios.objects.get(correo = txtUser, contrasenna = txtPassword)
-
+            
+            
             if(userDB == None):
                 return render(request, 'login.html',{
                     'documentTitle':'Log In',
@@ -41,6 +45,8 @@ def login (request):
             else:
 
                 request.session['userID'] = json.loads(json_util.dumps(userDB.pk))
+                request.session['friendsSuggestion'] = ls.getNewFriendsSuggestion(userDB.pk)
+                request.session['preferenceSuggestion'] = ls.getNewPreferencesSuggestion(userDB.pk)
 
                 return redirect(userConfiguration)
         except Exception as e:
@@ -60,10 +66,14 @@ def userConfiguration(request):
         userID = request.session['userID']
         userID = userID['$oid']
         user = Usuarios.objects.get(pk = ObjectId(userID))   
+        friendsRecommendation = json.loads(request.session['friendsSuggestion'])
+        preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
 
         return render(request,'userConfiguration.html',{
             'documentTitle':'User Configuration',
-            'user':user
+            'user':user,
+            'friends':friendsRecommendation,
+            'preferenceRecommendations':preferencesRecommendation
         })
     
     if request.method == 'POST':

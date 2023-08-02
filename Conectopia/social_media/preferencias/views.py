@@ -43,14 +43,15 @@ def preferenceList(request):
         
         #Concert the list in a dictionary
         preferenceList = preferenceList.to_dict(orient='records')
-     
-        #Get the preferences that the user selected
-        #userPreferences = GustosUsuarios.objects.filter(idUsuario_id = ObjectId(userID))
+        friendsRecommendation = json.loads(request.session['friendsSuggestion'])
+        preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
 
         return render (request,'preferenceList.html',{
             'documentTitle':'Preference List',
             'user':user,
-            'preferenceList':preferenceList
+            'preferenceList':preferenceList,
+            'friends':friendsRecommendation,
+            'preferenceRecommendations':preferencesRecommendation
         })
 
 def eliminatePreference(request):
