@@ -45,6 +45,7 @@ def preferenceList(request):
         preferenceList = preferenceList.to_dict(orient='records')
         friendsRecommendation = json.loads(request.session['friendsSuggestion'])
         preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
+        
 
         return render (request,'preferenceList.html',{
             'documentTitle':'Preference List',

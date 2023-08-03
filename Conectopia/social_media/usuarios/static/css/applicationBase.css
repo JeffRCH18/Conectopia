@@ -17,6 +17,7 @@ body{
     width: 45px;
     object-fit: cover;
     background-color: transparent;
+    margin-left: 20px;
 }
 
 .btn-add{

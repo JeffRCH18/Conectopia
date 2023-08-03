@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'usuarios',
     'friends',
-    'preferencias'
+    'preferencias',
+    'home'
 ]
 
 MIDDLEWARE = [
@@ -126,7 +127,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    'social_media\static_shared',
+    'social_media/static_shared',
 ]
 
 # Default primary key field type

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from home import views as homeViews
 from usuarios import views as usuariosViews
 from friends import views as friendsViews
 from preferencias import views as preferenceViews
@@ -39,8 +39,12 @@ urlpatterns = [
     path('preferenceList/',preferenceViews.preferenceList),
     path('deletePreference/',preferenceViews.eliminatePreference),
     path('addPreference/',preferenceViews.createPreference),
+    path('preferenceList/',preferenceViews.preferenceList, name='preferences'),
     path('createNewPreference/',preferenceViews.createNewPreference),
     path('show_requests/', friendsViews.show_requests, name='show_requests'),
     path('add_request/', friendsViews.add_request, name='add_request'),
-    path('delete_accept_request/', friendsViews.delete_accept_request, name='delete_accept_request')
+    path('listFriends/',friendsViews.listFriends, name='listFriends'),
+    path('delete_accept_request/', friendsViews.delete_accept_request, name='delete_accept_request'),
+    path('delete_friend/',friendsViews.delete_friend, name='delete-amigo'),
+    path('visit_home/',homeViews.visit_home, name='homme')
 ]

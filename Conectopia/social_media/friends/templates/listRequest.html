@@ -16,16 +16,18 @@
             <li>
                 <form action="{% url 'delete_accept_request' %}" method="POST">
                     <div class="friend-item">
-                        <img src="{{ solicitud.Id_emisor.imagen }}" alt="Foto de amigo">
-                        <div class="friend-info">
+                        <img src='{% static solicitud.Id_emisor.imagen %}' alt="Foto de amigo">
+                        <div class="friend-info1">
+                            <li>
                             <h3>{{ solicitud.Id_emisor.nombre }}</h3>
-                            <span class="common-friend">1 amigo en común</span>
+                            <span class="common-friend1">1 amigo en común</span>
+                            </li>
                         </div>
                         <div class="button-container">
                             {% csrf_token %}
                             <input type="hidden" name="solicitud_id" value="{{ solicitud.pk }}">
-                            <button type="submit" class="btn btn-danger" name="accion" value="eliminar">Eliminar</button>
-                            <button type="submit" class="btn btn-success" name="accion" value="aceptar">Aceptar</button>
+                            <button type="submit" class="btn-delete" name="accion" value="eliminar">Eliminar</button>
+                            <button type="submit" class="btn-accept" name="accion" value="aceptar">Aceptar</button>
                         </div>
                     </div>
                 </form>
@@ -33,23 +35,31 @@
             {% endfor %}
         </ul>
         {% else %}
-        <p>No tienes solicitudes de amistad pendientes.</p>
+        <div class="container_no_friend">
+            <div class="no-friend">
+                <p>No tienes solicitudes de amistad pendientes</p>
+            </div>
+        </div>
         {% endif %}
     </div>
 </div>
+
 <script>
     {% if messages %}
         {% for message in messages %}
             Swal.fire({
-                icon: 'success',
+                icon: '{% if message.tags == "success" %}success{% elif message.tags == "warning" %}warning{% endif %}',  // Usamos la clase "success" o "warning" según el tipo de mensaje
                 title: 'Friend Request Sent!',
                 text: "{{ message }}",
                 showConfirmButton: false,
-                timer: 3000  // Change the time (in milliseconds) you want the notification to show
+                timer: 3000 
             });
         {% endfor %}
     {% endif %}
 </script>
 {% endblock %}
+
+
+
 
 
