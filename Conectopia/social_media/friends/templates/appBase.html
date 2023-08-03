@@ -103,44 +103,16 @@
 
                         <div class="card-body bg-white">
 
-                            <div class="row bg-white" style="margin-top: 10px;">
+                            {% for item in friends %}
+
+                            <div class="row bg-white" style="margin-top: 15px;">
                                 <div class="col-3 bg-white justify-content-end">
-                                    <img src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                                        alt="profilepic" class="rounded-circle img-fluid bg-white"
+                                    <img src="{% static item.imagen %}" alt="profilepic"
+                                        class="rounded-circle img-fluid bg-white"
                                         style="object-fit: cover; width: 80%; height: 50px">
                                 </div>
                                 <div class="col-6 bg-white">
-                                    <h6 class="bg-white">User Name</h6>
-                                    <p class="bg-white text-muted">0 Friends in common</p>
-                                </div>
-                                <div class="col-3 bg-white">
-                                    <img src="{% static 'images/Add icon.png' %}" alt="Home" class="iconStyle"
-                                        style="width: 40px;">
-                                </div>
-                            </div>
-                            <div class="row bg-white" style="margin-top: 10px;">
-                                <div class="col-3 bg-white justify-content-end">
-                                    <img src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                                        alt="profilepic" class="rounded-circle img-fluid bg-white"
-                                        style="object-fit: cover; width: 80%; height: 50px">
-                                </div>
-                                <div class="col-6 bg-white">
-                                    <h6 class="bg-white">User Name</h6>
-                                    <p class="bg-white text-muted">0 Friends in common</p>
-                                </div>
-                                <div class="col-3 bg-white">
-                                    <img src="{% static 'images/Add icon.png' %}" alt="Home" class="iconStyle"
-                                        style="width: 40px;">
-                                </div>
-                            </div>
-                            <div class="row bg-white" style="margin-top: 10px;">
-                                <div class="col-3 bg-white justify-content-end">
-                                    <img src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                                        alt="profilepic" class="rounded-circle img-fluid bg-white"
-                                        style="object-fit: cover; width: 80%; height: 50px">
-                                </div>
-                                <div class="col-6 bg-white">
-                                    <h6 class="bg-white">User Name</h6>
+                                    <h6 class="bg-white">{{item.nombre}}</h6>
                                     <p class="bg-white text-muted">0 Friends in common</p>
                                 </div>
                                 <div class="col-3 bg-white">
@@ -150,9 +122,18 @@
                             </div>
 
 
-                        </div>
+                            {% endfor %}
 
-                    </div>
+                            <div class="row justify-content-center bg-white"
+                                style="margin-top: 40px; border-top: 0.1rem solid gainsboro;">
+                                <div class="col-4 bg-white" style="margin-top: 10px;">
+                                    <a href="/searchUser/" class="bg-white">Look More</a>
+                                </div>
+                            </div>
+
+                        </div>    
+
+                </div>
                     <!-- Preferences Section -->
                     <div class="card" style="margin-top: 10px; border-radius: 25%;">
                         <div class="card-header bg-white" style="border: none;">
@@ -161,50 +142,24 @@
 
                         <div class="card-body bg-white">
 
-                            <div class="row bg-white" style="margin-top: 10px;">
-                                <div class="col-3 bg-white justify-content-end">
-                                    <img src="{% static 'images/Preferences Cats.png' %}" alt="profilepic"
-                                        class="rounded-circle img-fluid bg-white"
-                                        style="object-fit: cover; width: 80%; height: 50px">
-                                </div>
+                            {% for preference in preferenceRecommendations %}
+                            <div class="row bg-white" style="margin-top: 15px;">
                                 <div class="col-9 bg-white">
-                                    <h6 class="bg-white">Cats</h6>
-                                    <p class="bg-white text-muted">10 Followers</p>
+                                    <h6 class="bg-white">{{preference.gusto}}</h6>
+                                    <p class="bg-white text-muted">{{preference.total_followers}} Followers</p>
                                 </div>
                             </div>
-
-                            <div class="row bg-white" style="margin-top: 10px;">
-                                <div class="col-3 bg-white justify-content-end">
-                                    <img src="{% static 'images/Preferences Dogs.png' %}" alt="profilepic"
-                                        class="rounded-circle img-fluid bg-white"
-                                        style="object-fit: cover; width: 80%; height: 50px">
-                                </div>
-                                <div class="col-9 bg-white">
-                                    <h6 class="bg-white">Dogs</h6>
-                                    <p class="bg-white text-muted">10 Followers</p>
-                                </div>
-                            </div>
-
-                            <div class="row bg-white" style="margin-top: 10px;">
-                                <div class="col-3 bg-white justify-content-end">
-                                    <img src="{% static 'images/Preferences Bots.png' %}" alt="profilepic"
-                                        class="rounded-circle img-fluid bg-white"
-                                        style="object-fit: cover; width: 80%; height: 50px">
-                                </div>
-                                <div class="col-9 bg-white">
-                                    <h6 class="bg-white">Bots</h6>
-                                    <p class="bg-white text-muted">10 Followers</p>
-                                </div>
-                            </div>
+                            {% endfor %}
 
                             <div class="row justify-content-center bg-white"
                                 style="margin-top: 40px; border-top: 0.1rem solid gainsboro;">
                                 <div class="col-4 bg-white" style="margin-top: 10px;">
-                                    <a href="" class="bg-white">Look More</a>
+                                    <a href="/preferenceList/" class="bg-white">Look More</a>
                                 </div>
                             </div>
 
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

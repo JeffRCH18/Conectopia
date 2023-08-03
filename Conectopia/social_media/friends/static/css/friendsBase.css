@@ -1,4 +1,4 @@
-body{
+body {
     background-color: #DFDEEF;
 }
 
@@ -19,60 +19,61 @@ body{
     background-color: transparent;
 }
 
-.btn-add{
+.pendiente {
+    font-size: 12px;
+    color: #fff;
+    background-color: red;
+    padding: 5px 8px;
+    border-radius: 5px;
+    margin-top: 6px;
+    width:40px;
+}
+
+.btn-add {
     display: inline-block;
-    background-color:#D0CECD  ; /* Color de fondo del botón */
+    background-color: #D0CECD;
     background-size: cover;
     background-repeat: no-repeat;
-    color: #040404  ; /* Color del texto del botón */
+    color: #040404;
     margin-bottom: 15px;
     padding: 5px 5px;
-    text-decoration: none; /* Sin subrayado */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    text-decoration: none;
+    cursor: pointer;
     margin-right: 10px;
-    position: relative;
 }
 
-.btn-addd{
-    display: inline-block;
-    background-color:#D0CECD  ; /* Color de fondo del botón */
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #040404  ; /* Color del texto del botón */
-    margin-bottom: 15px;
-    margin-top: -30px;
-    padding: 5px 5px;
-    text-decoration: none; /* Sin subrayado */
-    margin-left: 450px;
-    position: relative;
+.btn-addd {
+    color: #040404;
+    width: 90px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    text-decoration: none;
+    margin-top: 6px;
+    margin-left: 8px; /* Ajusta el margen izquierdo para que esté al lado derecho del contenedor .friend-info */
 }
 
-
-
-
-
-
-.navbar-friends{
-    color:black;
+.navbar-friends {
+    color: black;
     padding-top: 15px;
     background-color: white;
 }
 
-.navbar-friends ul{
+.navbar-friends ul {
     display: flex;
-    list-style: none;;   
+    list-style: none;
     margin-top: 15px;
 }
 
-.navbar-friends li{
+.navbar-friends li {
     margin-right: 50px;
 }
 
-.txt-list{
-        font-size: 22px;
+.txt-list {
+    font-size: 22px;
 }
 
-.col-central{
+.col-central {
     border-radius: 10%;
 }
 
@@ -82,16 +83,22 @@ body{
     padding: 0;
 }
 
-
 .friend-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    /* Alinea los elementos con espacio entre ellos */
     margin-bottom: 10px;
     background-color: #DFDEEF;
+    padding: 10px;
+    /* Ajusta el espaciado interno de cada elemento */
 }
 
-
-
+.friend-item .users-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
 
 .friend-item img {
     width: 50px;
@@ -101,10 +108,16 @@ body{
 }
 
 .friend-info {
+    flex: 1;
+    /* Ajusta la flexibilidad del contenedor */
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    /* Alinea horizontalmente los elementos en el contenedor */
+    margin-left: 10px;
+    /* Agrega un margen entre la imagen y el nombre del usuario */
 }
-  
+
 .friend-info h3 {
     margin: 0;
     margin-bottom: 5px;
@@ -112,14 +125,15 @@ body{
 }
 
 .form-container {
-    margin-bottom: 20px; /* Ajusta el valor según tus necesidades */
+    margin-bottom: 20px;
+    /* Ajusta el valor según tus necesidades */
 }
 
 .common-friend {
     font-size: 12px;
     color: #888;
 }
-  
+
 .btn-add {
     border: none;
     padding-left: 5px;
@@ -127,8 +141,8 @@ body{
     cursor: pointer;
     margin-left: auto;
 }
- 
-.btn-search{
+
+.btn-search {
     background: #3390FF;
     color: #DFDEEF;
     padding-bottom: 5px;
@@ -141,9 +155,7 @@ body{
     text-align: center;
 }
 
-
-
-.text-search{
+.text-search {
     margin-top: 8px;
     margin-bottom: 10px;
     height: 30px;
@@ -153,7 +165,7 @@ body{
     margin-right: 15px;
 }
 
-.text-user{
+.text-user {
     margin-top: 12px;
     margin-left: 15px;
     font-size: 22px;
@@ -166,20 +178,32 @@ body{
     padding-bottom: 5px;
 }
 
-
-.container-list{
-    margin-top: 20px;
-    padding-top: 2px;
-    background-color:gainsboro;
+.users-container {
+    display: flex;
+    align-items: center;
 }
 
-.img-user{
+.header-content {
+    display: flex;
+    align-items: center;
+    /* Centra verticalmente los elementos */
+    margin-left: 10px;
+    /* Añade el margen entre el encabezado y el enlace */
+}
+
+.container-list {
+    margin-top: 20px;
+    padding-top: 2px;
+    background-color: gainsboro;
+}
+
+.img-user {
     margin-top: 5px;
     width: 45px;
     height: 45px;
 }
 
-.img-list{
+.img-list {
     margin-top: 5px;
     width: 45px;
     height: 45px;
@@ -193,19 +217,19 @@ body{
     margin-bottom: 10px;
     border-radius: 5px;
 }
- 
+
 .input-container {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.button-container{
+.button-container {
     display: flex;
     justify-content: space-between;
     gap: 5px;
     margin-left: 250px;
     margin-top: 5px;
     margin-right: 9px;
-    margin-bottom: -5px;
+
 }

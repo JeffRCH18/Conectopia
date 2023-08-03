@@ -1,30 +1,70 @@
-{% extends 'appBase.html' %} 
+{% extends 'appBase.html' %}
 {% load static %}
+
 {% block content %}
-<div class="card">
-  <div class="card-body bg-white col-central">
-    <div class="search-container">
-      <img src="{% static 'images/log-lista.png' %}" class="img-list">
-      <h1 class="text-user">Friends list</h1>
+<div class="container">
+  <div class="users-container">
+    <img src="{% static 'images/log-lista.png' %}" class="img-list">
+    <div class="header-content">
+      <h1 class="text-users">Friends list</h1>
+      <a class="btn-request" href="{% url 'search' %}">
+        <img src="{% static 'images/log-users.png' %}" alt="Home" class="iconStyle">
+        Search Users
+      </a>
     </div>
-    <div class="container-list">
+  </div>
+</div>
+  <div class="card">
+    <div class="card-body bg-white col-central">
+  
       <ul class="list-friends">
         {% for amigo in amistad %}
         <li>
           <div class="friend-item">
-            <img src="{{ amigo.imagen }}" alt="Foto de amigo" style="width: 40px; height: 40px;">
+            <img src='{% static amigo.imagen %}' alt="Foto de amigo" style="width: 40px; height: 40px;">
             <div class="friend-info">
-              <h3>{{ amigo.nombre}}</h3>
+              <h3>{{ amigo.nombre }}</h3>
               <span class="common-friend">1 amigo en común</span>
             </div>
-            <button class="btn-add">
-              <img src="{% static 'images/log-eliminar.png' %}" style="width: 40px; height: 40px;"></img>
-            </button>
+            <button type="submit" class="btn-add add-friend-btn">
+              <img src="{% static 'images/log-agregar.png' %}" style="width: 40px; height: 40px;">
+          </button>
           </div>
         </li>
         {% endfor %}
       </ul>
-    </div>
+    
   </div>
 </div>
+
+<script>
+  function removeFriend(amigoId) {
+    $.ajax({
+      type: 'POST',
+      url: '/remove_friend/',
+      data: {
+        amigo_id: amigoId,
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data.success) {
+
+          $(`.friend-item[data-amigo-id="${amigoId}"]`).remove();
+          alert(data.message);
+        } else {
+          alert(data.message);
+        }
+      },
+      error: function () {
+        alert('Error al eliminar el abbbbbbbbmigo.');
+      },
+    });
+  }
+  $('.btn-remove').click(function () {
+    const amigoId = $(this).data('amigo-id');
+    removeFriend(amigoId);
+  });
+</script>
 {% endblock %}
+

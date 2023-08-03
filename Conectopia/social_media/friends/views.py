@@ -24,94 +24,87 @@ def listFriends(request):
     userID = userID['$oid']
     user = Usuarios.objects.get(pk=ObjectId(userID))
 
-    # Obtener la lista de amigos del usuario en sesión
     amigos = Usuarios.objects.filter(
         Q(following__user1=user) | Q(follower__user2=user)
-    ).distinct()
+    ).exclude(pk=user.pk) 
 
-    return render(request, 'listFriends.html', {'user': user,'amistad': amigos})
+    return render(request, 'listFriends.html', {'user': user, 'amistad': amigos})
 
 
 def searchUser(request):
     query = request.GET.get('buscar_query')
     users = Usuarios.objects.all()
+
     if query:
         users = users.filter(nombre__icontains=query)
-    userID = request.session['userID']
-    userID = userID['$oid']
+
+    userID = request.session.get('userID')
+    userID = userID['$oid']  
     user = Usuarios.objects.get(pk=ObjectId(userID))
-    users = users.exclude(pk=user.pk)
+
+    amigos = Amistad.objects.filter(Q(user1=user) | Q(user2=user))
+    amigos_user_ids = set(amigos.values_list('user1_id', flat=True)) | set(amigos.values_list('user2_id', flat=True))
+    
+    solicitudes_enviadas = Solicitud.objects.filter(Id_emisor=user)
+    usuarios_solicitudes_enviadas_ids = set(solicitudes_enviadas.values_list('Id_receptor_id', flat=True))
+
+    solicitudes_recibidas = Solicitud.objects.filter(Id_receptor=user)
+    usuarios_solicitudes_recibidas_ids = set(solicitudes_recibidas.values_list('Id_emisor_id', flat=True))
+
+    usuarios_solicitudes_amigos_ids = usuarios_solicitudes_enviadas_ids | usuarios_solicitudes_recibidas_ids | amigos_user_ids
+    
+    usuarios_amigos_ids = set(amigos_user_ids)
+    
+    usuarios_usuarios = users.exclude(pk=user.pk).exclude(pk__in=usuarios_amigos_ids)
+
+    
+    for usuario in usuarios_usuarios:# Verificar si cada usuario está en la lista de usuarios con solicitudes o amigos
+        usuario.en_espera = usuario.pk in usuarios_solicitudes_amigos_ids
+
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         data = []
-        for user in users:
+        for usuario in usuarios_usuarios:
             data.append({
-                'pk': str(user.pk),
-                'nombre': user.nombre,
-                'imagen': user.imagen,
+                'pk': str(usuario.pk),
+                'nombre': usuario.nombre,
+                'imagen': usuario.imagen,
+                'en_espera': usuario.en_espera 
             })
         return JsonResponse(data, safe=False)
     else:
-        return render(request, 'addFriends.html', {'user': user, 'usuarios_usuarios': users})
+        return render(request, 'addFriends.html', {'user': user, 'usuarios_usuarios': usuarios_usuarios})
+
 
 def add_request(request):
     if request.method == 'POST':
-        userID = request.session['userID']
-        userID = userID['$oid']
-        usuario_sesion = ObjectId(userID)
         receptor_id = request.POST.get('receptor_id')
+        userID = request.session.get('userID')
+        userID = userID['$oid']  
+        user = Usuarios.objects.get(pk=ObjectId(userID))
+        receptor = Usuarios.objects.get(pk=ObjectId(receptor_id))
 
-        existe_solicitud = Solicitud.objects.filter(
-            (Q(Id_emisor_id=usuario_sesion) & Q(Id_receptor_id=receptor_id)) | 
-            (Q(Id_emisor_id=receptor_id) & Q(Id_receptor_id=usuario_sesion)),
-            Stade__in=['Pendiente', 'Aceptada']
-        ).exists()
+        if Amistad.objects.filter(Q(user1=user, user2=receptor) | Q(user1=receptor, user2=user)).exists():
+            # Ya son amigos, no se puede enviar solicitud
+            return JsonResponse({'success': False, 'message': 'Ya eres amigo de este usuario.'})
 
-        if existe_solicitud:
-            response_data = {'success': False}
-        else:
-            solicitud = Solicitud(Id_emisor_id=usuario_sesion, Id_receptor_id=receptor_id, Stade='Pendiente')
-            solicitud.save()
-            response_data = {'success': True}
+        if Solicitud.objects.filter(Id_emisor=user, Id_receptor=receptor, Stade='Pendiente').exists():
+            # Ya hay una solicitud pendiente, no se puede enviar otra
+            return JsonResponse({'success': False, 'message': 'Ya tienes una solicitud de amistad pendiente para este usuario.'})
 
-            request.session['solicitud_enviada'] = True
+        # Crear la solicitud de amistad
+        solicitud = Solicitud(Id_emisor=user, Id_receptor=receptor, Stade='Pendiente')
+        solicitud.save()
 
-        return JsonResponse(response_data)
+        return JsonResponse({'success': True, 'message': 'Solicitud de amistad enviada correctamente.'})
 
     return redirect('search')
-    """if request.method == 'POST':
-        userID = request.session['userID']
-        userID = userID['$oid']
-        usuario_sesion = ObjectId(userID)
-        receptor_id = request.POST.get('receptor_id')
-        solicitud = Solicitud(Id_emisor_id=usuario_sesion, Id_receptor_id=receptor_id, Stade='Pendiente')
-        solicitud.save()
-        response_data = {'success': True}
-        
-        # Guardar el estado "Pendiente" en la sesión del usuario
-        request.session['solicitud_enviada'] = True
-        
-        return JsonResponse(response_data)
-    return redirect('search')"""
-    """if request.method == 'POST':
-        userID = request.session['userID']
-        userID = userID['$oid'] 
-        usuario_sesion = ObjectId(userID)
-
-        receptor_id = request.POST.get('receptor_id')
-       
-        solicitud = Solicitud(Id_emisor_id=usuario_sesion, Id_receptor_id=receptor_id, Stade='Pendiente')
-        solicitud.save()
-        response_data = {'success': True} # Puedes modificar esto según tus necesidades
-        return JsonResponse(response_data)
-    return redirect('search')"""
-
 
 def show_requests(request):
     if request.method == 'GET':
         userID = request.session.get('userID') 
         userID = userID['$oid'] 
         user = Usuarios.objects.get(pk=ObjectId(userID))
-        solicitudes_pendientes = Solicitud.objects.filter(Id_receptor_id=userID, Stade='Pendiente')
+        solicitudes_pendientes = Solicitud.objects.filter(Id_receptor_id=user, Stade='Pendiente')
         return render(request, 'listRequest.html', {'user': user, 'friends_solicitud': solicitudes_pendientes})
 
 def delete_accept_request(request):
@@ -125,13 +118,21 @@ def delete_accept_request(request):
         if accion == 'eliminar':
             solicitud = Solicitud.objects.get(pk=ObjectId(solicitud_id))
             solicitud.delete()
-            messages.success(request, 'Solicitud aceptada correctamente.')
+            messages.success(request, 'Solicitud eliminada correctamente.')
                 
         elif accion == 'aceptar':
             solicitud = Solicitud.objects.get(pk=ObjectId(solicitud_id))
             solicitud.Stade = 'Aceptado'
-            amistad = Amistad.objects.create(user1=user, user2=solicitud.Id_emisor)
-            amistad.save()
             solicitud.save()
-            messages.error(request, 'Solicitud eliminada correctamente.')
-    return redirect('show_requests')
+
+            if solicitud.Id_emisor != user:
+                # Crear la amistad en sentido 1: usuario en sesión sigue a usuario que envió la solicitud
+                amistad_usuario_sesion = Amistad.objects.create(user1=user, user2=solicitud.Id_emisor)
+                amistad_usuario_sesion.save()
+
+                # Crear la amistad en sentido 2: usuario que envió la solicitud sigue al usuario en sesión
+                amistad_emisor_usuario_sesion = Amistad.objects.create(user1=solicitud.Id_emisor, user2=user)
+                amistad_emisor_usuario_sesion.save()
+
+                messages.success(request, 'Solicitud aceptada correctamente.')
+        return redirect('show_requests')

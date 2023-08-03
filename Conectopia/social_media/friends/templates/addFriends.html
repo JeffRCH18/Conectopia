@@ -10,7 +10,7 @@
         <form action="{% url 'search' %}" method="GET" autocomplete="off">
             <input type="search" class="text-search" name="buscar_query" placeholder="Buscar usuario" autocomplete="false"/>
             <button type="submit" class="btn-search">Buscar</button>
-          </form>
+        </form>
     </div>
 </div>
 <div class="card">
@@ -21,16 +21,23 @@
             <li>
                 <form action="{% url 'add_request' %}" method="POST" id="form-{{ usuario.pk }}">
                     <div class="friend-item">
-                        <img src="{{ usuario.imagen }}" alt="Foto de amigo">
-                        <div class="friend-info">
-                            <h3>{{ usuario.nombre }}</h3>
-                            <span class="common-friend">1 amigo en común</span>
+                        <div class="users-container">
+                            <img src='{% static usuario.imagen %}' alt="Foto de amigo" class="img-list">
+                            <div class="friend-info">
+                                <h3>{{ usuario.nombre }}</h3>
+                            </div>
+                        </div>
+                        <div class="btn-add">
+                            {% if usuario.en_espera %}
+                                <span class="btn-addd pendiente">Pendiente</span>
+                            {% else %}
+                                <button type="submit" class="btn-add add-friend-btn">
+                                    <img src="{% static 'images/log-agregar.png' %}" style="width: 40px; height: 40px;">
+                                </button>
+                            {% endif %}
                         </div>
                         {% csrf_token %}
                         <input type="hidden" name="receptor_id" value="{{ usuario.pk }}">
-                        <button type="submit" class="btn-add add-friend-btn">
-                            <img src="{% static 'images/log-agregar.png' %}" style="width: 40px; height: 40px;">
-                        </button>
                     </div>
                 </form>
             </li>
