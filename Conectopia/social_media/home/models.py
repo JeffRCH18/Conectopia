@@ -1,7 +1,15 @@
 from django.db import models
+from otra_aplicacion.models import Usuarios
 
-# Create your models here.
+class Comentario(models.Model):
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
+    contenido = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
 class Publicacion(models.Model):
-    titulo = models.CharField(max_length=200)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
     descripcion = models.TextField()
-    imagen = models.ImageField(upload_to='publicaciones/', null=True, blank=True)
+    imagen = models.ImageField(upload_to='publicaciones/')
+    likes = models.PositiveIntegerField(default=0)
+    comentarios = models.ManyToManyField(Comentario, blank=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
