@@ -140,7 +140,13 @@ def delete_accept_request(request):
                 # Crear la amistad en sentido 1: usuario en sesión sigue a usuario que envió la solicitud
                 amistad_usuario_sesion = Amistad.objects.create(user1=user, user2=solicitud.Id_emisor)
                 amistad_usuario_sesion.save()
+
+                # Crear la amistad en sentido 2: usuario que envió la solicitud sigue al usuario en sesión
+                amistad_usuario_emisor = Amistad.objects.create(user1=solicitud.Id_emisor, user2=user)
+                amistad_usuario_emisor.save()
+
                 messages.success(request, 'Solicitud aceptada correctamente.')
+
         return redirect('show_requests')
 
 def delete_friend(request):
@@ -151,13 +157,19 @@ def delete_friend(request):
         user = Usuarios.objects.get(pk=ObjectId(userID))
         friend = Usuarios.objects.get(pk=ObjectId(friend_id))
 
-        # Eliminar la amistad
-        amistad = Amistad.objects.filter(user1=user, user2=friend).get()
-        
+        # Obtener todas las amistades que cumplen con los criterios de búsqueda
+        amistades = Amistad.objects.filter(Q(user1=user, user2=friend) | Q(user1=friend, user2=user))
 
-        solicitud = Solicitud.objects.filter(Id_emisor=friend, Id_receptor=user).get()
-        amistad.delete()
-        solicitud.delete()
+        # Eliminar todas las amistades
+        for amistad in amistades:
+            amistad.delete()
+
+        # Eliminar la solicitud si existe
+        try:
+            solicitud = Solicitud.objects.get(Id_emisor=user, Id_receptor=friend)
+            solicitud.delete()
+        except Solicitud.DoesNotExist:
+            pass
 
         messages.success(request, 'Amistad eliminada correctamente.')
 

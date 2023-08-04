@@ -87,9 +87,14 @@ body{
     background-color: #DFDEEF;
     padding: 10px;
     border-radius: 6px;
+    border: 1px solid #3390FF;
     
 }
 
+.friend-item:hover{
+    background-color: white;
+
+}
 
 .friend-item .users-container {
     display: flex;
@@ -165,14 +170,22 @@ body{
     color: #DFDEEF;
 }
 
-.text-search{
+.text-search1{
     margin-top: 8px;
     margin-bottom: 10px;
     height: 30px;
     color: #3390FF;
     opacity: 1;
     background-color: #DFDEEF;
+    border: 1px solid #3390FF;
+    border-radius: 6px;
     margin-right: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+.text-search1:focus{
+    border-color: #3390FF;
+    outline: none;
 }
 
 .text-user{
@@ -203,6 +216,7 @@ body{
 .users-container {
     display: flex;
     align-items: center;
+    margin-left: 20px;
 }
 
 .header-content {
@@ -210,6 +224,14 @@ body{
     align-items: center; /* Centra verticalmente los elementos */
     margin-left: 10px; /* Añade el margen entre el encabezado y el enlace */
   }
+
+.header-content2{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 20px; /* Ajusta el margen según tus necesidades */
+  margin-top: 20px;
+}
 
 .container-list{
     margin-top: 20px;
@@ -238,6 +260,16 @@ body{
     border-radius: 5px;
 }
  
+.container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background-color: #fff;
+    margin-bottom: 10px;
+    height: 90px;
+    border-radius: 5px;
+}
+
 .input-container {
     display: flex;
     align-items: center;
