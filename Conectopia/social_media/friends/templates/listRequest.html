@@ -2,13 +2,15 @@
 {% load static %}
 
 {% block content %}
-<div class="card">
+<div class="container1">
     <div class="card-body bg-white col-central">
-        <div class="search-container">
+        <div class="header-content2">
             <img src="{% static 'images/log-lista.png' %}" class="img-list">
             <h1 class="text-user">Solicitudes de amistad pendientes</h1>
         </div>
     </div>
+</div>
+<div class="card">
     <div class="card-body bg-white col-central">
         {% if friends_solicitud %}
         <ul class="list-friends">

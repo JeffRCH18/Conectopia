@@ -65,12 +65,14 @@
                             </div>
                             <!-- User Options -->
                             <div class="container bg-white">
-                                <div class="row bg-white" style="margin-top: 50px; margin-left: 10px;"><img
-                                        src="{% static 'images/Home icon.png' %}" alt="Home" class="iconStyle">Home
-                                </div>
-                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" href="{% url 'show_requests' %}"><img
+                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" href="{% url 'homme' %}"><img
+                                    src="{% static 'images/Home icon.png' %}" alt="Home" class="iconStyle">Home
+                                </a>
+                                <a class="tt row bg-white" style="margin-top: 50px; margin-left: 10px;" href="{% url 'show_requests' %}"><img
                                         src="{% static 'images/Notification icon.png' %}" alt="Home"
                                         class="iconStyle">Notifications
+                                        <span class="notification-counter">{{ solicitudes_pendientes }}</span>
+                                        
                                 </a>
                                 <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" href="{% url 'listFriends' %}"
                                     onclick="window.location.href = '/listfriends/'"><img

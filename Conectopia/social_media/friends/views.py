@@ -34,8 +34,8 @@ def listFriends(request):
     ).exclude(pk=user.pk) 
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
-    
-    return render(request, 'listFriends.html', {'user': user, 'amistad': amigos,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation})
+    solicitudes_pendientes = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
+    return render(request, 'listFriends.html', {'user': user, 'amistad': amigos,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitudes_pendientes})
 
 
 def searchUser(request):
@@ -67,7 +67,9 @@ def searchUser(request):
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
     
-    for usuario in usuarios_usuarios:# Verificar si cada usuario está en la lista de usuarios con solicitudes o amigos
+    solicitud_pendiente = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
+
+    for usuario in usuarios_usuarios:
         usuario.en_espera = usuario.pk in usuarios_solicitudes_amigos_ids
 
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
@@ -81,7 +83,7 @@ def searchUser(request):
             })
         return JsonResponse(data, safe=False)
     else:
-        return render(request, 'addFriends.html', {'user': user, 'usuarios_usuarios': usuarios_usuarios,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation})
+        return render(request, 'addFriends.html', {'user': user, 'usuarios_usuarios': usuarios_usuarios,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitud_pendiente})
 
 
 def add_request(request):
@@ -114,9 +116,10 @@ def show_requests(request):
         userID = userID['$oid'] 
         user = Usuarios.objects.get(pk=ObjectId(userID))
         solicitudes_pendientes = Solicitud.objects.filter(Id_receptor_id=user, Stade='Pendiente')
+        solicitud_pendiente = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
         friendsRecommendation = json.loads(request.session['friendsSuggestion'])
         preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
-        return render(request, 'listRequest.html', {'user': user, 'friends_solicitud': solicitudes_pendientes,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation})
+        return render(request, 'listRequest.html', {'user': user, 'friends_solicitud': solicitudes_pendientes,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitud_pendiente})
 
 def delete_accept_request(request):
     if request.method == 'POST':

@@ -371,6 +371,26 @@ body{
     background-color: #3390FF;
     border-color: #3390FF;
     color: white;
-    
+}
 
+.notification-counter {
+    text-decoration: none;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5.5px 7px; /* Ajusta los valores para hacer el círculo más pequeño */
+    font-size: 12px; /* Ajusta el tamaño del texto del contador */
+    width: 22px; /* Ajusta el ancho del círculo */
+    height: 22px; /* Ajusta la altura del círculo */
+    display: inline-block; /* Agrega esto para que ocupe el espacio necesario y se alinee a la par */
+    margin-left: 5px; /* Ajusta el margen izquierdo para separar el contador del texto */
+    line-height: 12px; /* Asegura que el texto esté centrado verticalmente dentro del círculo */      
+  }
+
+.notification-label {
+    margin-left: 10px;
+  }
+
+.tt{
+    text-decoration: none;
 }
