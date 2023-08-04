@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Posts</title>
+</head>
+
+<body>
+  <div class="posts-container">
+    {% for post in posts %}
+    <div class="post">
+      <p>{{ post.content }}</p>
+      <form method="post" action="{% url 'delete_post' post.id %}">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+
+</html>
