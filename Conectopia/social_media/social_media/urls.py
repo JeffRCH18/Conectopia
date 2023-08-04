@@ -46,5 +46,9 @@ urlpatterns = [
     path('listFriends/',friendsViews.listFriends, name='listFriends'),
     path('delete_accept_request/', friendsViews.delete_accept_request, name='delete_accept_request'),
     path('delete_friend/',friendsViews.delete_friend, name='delete-amigo'),
-    path('visit_home/',homeViews.visit_home, name='homme')
+    path('home_view', homeViews.home_view, name='home'),
+    path('Publicaciones/<int:post_id>/delete/', homeViews.delete_post, name='delete_post'),
+    path('editar/<int:publicacion_id>/', homeViews.editar_publicacion, name='editar_publicacion'),
+    path('borrar/<int:publicacion_id>/', homeViews.borrar_publicacion, name='borrar_publicacion'),
+
 ]
