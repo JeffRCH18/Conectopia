@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from otra_aplicacion.models import Usuarios
 
 class Comentario(models.Model):
@@ -13,3 +14,8 @@ class Publicacion(models.Model):
     likes = models.PositiveIntegerField(default=0)
     comentarios = models.ManyToManyField(Comentario, blank=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+class PublicacionForm(forms.ModelForm):
+    class Meta:
+        model = Publicacion
+        fields = ['titulo', 'contenido', 'imagen', 'usuario']

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'create.css' %}">
+    <title>Crear Publicación</title>
+</head>
+<body>
+    <h1>Crear Nueva Publicación</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear</button>
+    </form>
+    
+    <a href="{% url 'home' %}">Cancelar</a>
+</body>
+</html>

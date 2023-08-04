@@ -46,24 +46,6 @@ def crearPublicacion(request):
         return redirect('home_view.html') 
     return render(request, 'createPost.html') 
 
-def modificarPublicacion(request, publicacion_id):
-    publicacion = get_object_or_404(Publicacion, id=publicacion_id)
-
-    if request.method == 'POST':
-        # Obtener los nuevos datos del formulario
-        nueva_descripcion = request.POST['nueva_descripcion']
-        nueva_imagen = request.FILES.get('nueva_imagen')
-
-        publicacion.descripcion = nueva_descripcion
-        if nueva_imagen:
-            publicacion.imagen = nueva_imagen
-        publicacion.save()
-
-        return redirect('home.html')  
-
-    context = {'publicacion': publicacion}
-    return render(request, 'updatePost.html', context)  
-
 def eliminarPublicacion(request, publicacion_id):
     publicacion = get_object_or_404(Publicacion, id=publicacion_id)
 
@@ -75,3 +57,27 @@ def eliminarPublicacion(request, publicacion_id):
 
     context = {'publicacion': publicacion}
     return render(request, 'home.html', context)
+
+def crear_publicacion(request):
+    if request.method == 'POST':
+        form = PublicacionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home.html')  
+    else:
+        form = PublicacionForm()
+    
+    return render(request, 'crear_publicacion.html', {'form': form})
+
+def editar_publicacion(request, publicacion_id):
+    publicacion = get_object_or_404(Publicacion, pk=publicacion_id)
+    
+    if request.method == 'POST':
+        form = PublicacionForm(request.POST, instance=publicacion)
+        if form.is_valid():
+            form.save()
+            return redirect('home.html')  # Redirigir a la lista de publicaciones
+    else:
+        form = PublicacionForm(instance=publicacion)
+    
+    return render(request, 'editar_publicacion.html', {'form': form, 'publicacion': publicacion})
