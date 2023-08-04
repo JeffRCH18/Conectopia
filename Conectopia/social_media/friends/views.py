@@ -34,8 +34,8 @@ def listFriends(request):
     ).exclude(pk=user.pk) 
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
-    
-    return render(request, 'listFriends.html', {'user': user, 'amistad': amigos,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation})
+    solicitudes_pendientes = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
+    return render(request, 'listFriends.html', {'user': user, 'amistad': amigos,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitudes_pendientes})
 
 
 def searchUser(request):
@@ -67,7 +67,9 @@ def searchUser(request):
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
     
-    for usuario in usuarios_usuarios:# Verificar si cada usuario está en la lista de usuarios con solicitudes o amigos
+    solicitud_pendiente = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
+
+    for usuario in usuarios_usuarios:
         usuario.en_espera = usuario.pk in usuarios_solicitudes_amigos_ids
 
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
@@ -81,7 +83,7 @@ def searchUser(request):
             })
         return JsonResponse(data, safe=False)
     else:
-        return render(request, 'addFriends.html', {'user': user, 'usuarios_usuarios': usuarios_usuarios,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation})
+        return render(request, 'addFriends.html', {'user': user, 'usuarios_usuarios': usuarios_usuarios,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitud_pendiente})
 
 
 def add_request(request):
@@ -114,9 +116,10 @@ def show_requests(request):
         userID = userID['$oid'] 
         user = Usuarios.objects.get(pk=ObjectId(userID))
         solicitudes_pendientes = Solicitud.objects.filter(Id_receptor_id=user, Stade='Pendiente')
+        solicitud_pendiente = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
         friendsRecommendation = json.loads(request.session['friendsSuggestion'])
         preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
-        return render(request, 'listRequest.html', {'user': user, 'friends_solicitud': solicitudes_pendientes,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation})
+        return render(request, 'listRequest.html', {'user': user, 'friends_solicitud': solicitudes_pendientes,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitud_pendiente})
 
 def delete_accept_request(request):
     if request.method == 'POST':
@@ -140,7 +143,13 @@ def delete_accept_request(request):
                 # Crear la amistad en sentido 1: usuario en sesión sigue a usuario que envió la solicitud
                 amistad_usuario_sesion = Amistad.objects.create(user1=user, user2=solicitud.Id_emisor)
                 amistad_usuario_sesion.save()
+
+                # Crear la amistad en sentido 2: usuario que envió la solicitud sigue al usuario en sesión
+                amistad_usuario_emisor = Amistad.objects.create(user1=solicitud.Id_emisor, user2=user)
+                amistad_usuario_emisor.save()
+
                 messages.success(request, 'Solicitud aceptada correctamente.')
+
         return redirect('show_requests')
 
 def delete_friend(request):
@@ -151,13 +160,19 @@ def delete_friend(request):
         user = Usuarios.objects.get(pk=ObjectId(userID))
         friend = Usuarios.objects.get(pk=ObjectId(friend_id))
 
-        # Eliminar la amistad
-        amistad = Amistad.objects.filter(user1=user, user2=friend).get()
-        
+        # Obtener todas las amistades que cumplen con los criterios de búsqueda
+        amistades = Amistad.objects.filter(Q(user1=user, user2=friend) | Q(user1=friend, user2=user))
 
-        solicitud = Solicitud.objects.filter(Id_emisor=friend, Id_receptor=user).get()
-        amistad.delete()
-        solicitud.delete()
+        # Eliminar todas las amistades
+        for amistad in amistades:
+            amistad.delete()
+
+        # Eliminar la solicitud si existe
+        try:
+            solicitud = Solicitud.objects.get(Id_emisor=user, Id_receptor=friend)
+            solicitud.delete()
+        except Solicitud.DoesNotExist:
+            pass
 
         messages.success(request, 'Amistad eliminada correctamente.')
 
