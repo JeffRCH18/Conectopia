@@ -19,6 +19,9 @@ from usuarios.decorators import session_filter_required
 #Import data related to the user
 import usuarios.loadStadistics as ls
 
+#Import new views
+from home.views import visit_home
+
 # Create your views here.
 def login (request):
     #Execute when the page is going to be load 
@@ -48,7 +51,7 @@ def login (request):
                 request.session['friendsSuggestion'] = ls.getNewFriendsSuggestion(userDB.pk)
                 request.session['preferenceSuggestion'] = ls.getNewPreferencesSuggestion(userDB.pk)
 
-                return redirect(userConfiguration)
+                return redirect(visit_home)
         except Exception as e:
             print(e)
             return render(request, 'login.html',{

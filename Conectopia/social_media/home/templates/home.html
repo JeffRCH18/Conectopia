@@ -3,6 +3,25 @@
 {% block content %}
 {% load static %}
 
+<style>
+    .btn-outline-app {
+        color: rgb(177, 156, 217);
+        /* Text color */
+        background-color: transparent;
+        /* Transparent background */
+        border: 2px solid rgb(177, 156, 217);
+        /* Border color */
+    }
+
+    /* Hover effect */
+    .btn-outline-app:hover {
+        background-color: rgba(177, 156, 217, 0.514);
+        /* Background color on hover */
+        color: #fff;
+        /* Text color on hover */
+    }
+</style>
+
 <!-- New Post -->
 <div class="row">
     <div class="card" style="background-color: rgba(177, 156, 217, 0.062); border: none;">
@@ -12,7 +31,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-2">
                         <img src="{% static user.imagen %}" alt="profilepic" class="rounded-circle img-fluid bg-white"
-                            style="object-fit: cover; width: 80%; height: 90px">
+                            style="object-fit: cover; width: 80%; height: 75px">
                     </div>
                     <div class="col-md-10">
                         <input type="text" name="txtPost" id="txtPost" class="form-control"
@@ -41,7 +60,7 @@
                 </div>
 
                 <div class="row justify-content-center" style="margin-top: 25px;">
-                    <button class="btn btn-outline-primary">Post</button>
+                    <button class="btn btn-outline-app">Post</button>
                 </div>
             </form>
         </div>
@@ -63,9 +82,34 @@
                             style="object-fit: cover; width: 80%; height: 75px">
                     </div>
                     <div class="col-md-10">
-                        <p>{{post.contenido}}</p>
+                        <p class="text-muted">{{post.usuario.nombre}}</p>
+                        <p>{{post.contenido}} - <span class="badge badge-pill badge-info"
+                                style="background-color:  rgb(177, 156, 217) !important;">{{post.preferencia.gusto}}</span>
+                        </p>
                         <img src="{% static post.imagen %}" alt="" style="width: 100%;" id="postImage" name="postImage">
                     </div>
+                </div>
+                <div class="row" style="margin-top: 15px">
+                    <div class="col-12">
+                        <button class="btn btn-outline-app">
+                            <i class="fa-regular fa-heart" style="margin-right: 7px;"></i>Like
+                        </button>
+                        <button class="btn btn-outline-app">
+                            <i class="fa-regular fa-comment" style="margin-right: 7px;"></i>Comments
+                        </button>
+
+                        {% if post.usuario.pk == user.pk %}
+                            <button class="btn btn-outline-app">
+                                <i class="fa-regular fa-pen-to-square" style="margin-right: 7px;"></i>Edit
+                            </button>
+                        
+                            <button class="btn btn-outline-app">
+                                <i class="fa-regular fa-trash-can" style="margin-right: 7px;"></i>Delete
+                            </button>
+                        {% endif %}
+
+                    </div>
+
                 </div>
             </div>
         </div>

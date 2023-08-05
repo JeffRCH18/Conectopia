@@ -15,7 +15,7 @@ def visit_home(request):
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
     posiblePreferences = Gustos.objects.all()
-    postList = Publicaciones.objects.all()
+    postList = Publicaciones.objects.all().order_by('-fecha_publicacion')
 
     return render(request, 'home.html',
         {

@@ -66,19 +66,21 @@
                                 <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" href=""><img
                                         src="{% static 'images/Home icon.png' %}" alt="Home" class="iconStyle">Home
                                 </a>
-                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" href="{% url 'show_requests' %}"><img
+                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;"
+                                    href="{% url 'show_requests' %}"><img
                                         src="{% static 'images/Notification icon.png' %}" alt="Home"
                                         class="iconStyle">Notifications
                                 </a>
-                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" href="{% url 'listFriends' %}"
-                                    onclick="window.location.href = '/listfriends/'"><img
+                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;"
+                                    href="{% url 'listFriends' %}" onclick="window.location.href = '/listfriends/'"><img
                                         src="{% static 'images/Connections icon.png' %}" alt="Home" class="iconStyle">
                                     Connections</a>
-                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" href="{% url 'preferences' %}"><img
-                                        src="{% static 'images/Preferences icon.png' %}" alt="Home"
-                                        class="iconStyle" >Preferences</a>
+                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;"
+                                    href="{% url 'preferences' %}"><img src="{% static 'images/Preferences icon.png' %}"
+                                        alt="Home" class="iconStyle">Preferences</a>
 
-                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" onclick="window.location.href = '/closeSession/'"><img
+                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;"
+                                    onclick="window.location.href = '/closeSession/'"><img
                                         src="{% static 'images/Close Session icon.png' %}" alt="Home"
                                         class="iconStyle">Close Session</a>
                             </div>
@@ -181,6 +183,7 @@
 </body>
 
 </html>
+<script src="https://kit.fontawesome.com/e99470d852.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>

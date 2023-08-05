@@ -1,11 +1,11 @@
 from djongo import models
 from usuarios.models import Usuarios, Gustos
-import datetime
+from datetime import datetime
 
 class Publicaciones(models.Model):
     _id = models.ObjectIdField()
     usuario = models.ForeignKey(Usuarios,on_delete=models.CASCADE)
-    fecha_publicacion = models.DateField(default=datetime.date.today)
+    fecha_publicacion = models.DateField(default=datetime.now)
     imagen = models.CharField(max_length=500)
     contenido = models.CharField(max_length=500)
     preferencia = models.ForeignKey(Gustos,on_delete=models.CASCADE)
