@@ -2,59 +2,92 @@
 
 {% block content %}
 {% load static %}
-  <div class="main-container">
-    <div class="user-container">
-      <div class="main-userInfo-container">
-        <div class="userInfo-container">
-          <div class="pfp-container">
-            {% for publicacion in publicaciones %}
-            <div class="post-container">
-              <div class="topInfo-post-txt">
-                <p class="">{{ publicacion.usuario.nombre }}</p>
-              </div>
-              <div class="post">
-                <p class="">{{ publicacion.descripcion }}</p>
-                <div class="postImg-container">
-                  <img src='{% static publicacion.imagen.url %}' class="postImg" />
+
+<!-- New Post -->
+<div class="row">
+    <div class="card" style="background-color: rgba(177, 156, 217, 0.062); border: none;">
+        <div class="card-body">
+            <form action="/createPost/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row justify-content-center">
+                    <div class="col-md-2">
+                        <img src="{% static user.imagen %}" alt="profilepic" class="rounded-circle img-fluid bg-white"
+                            style="object-fit: cover; width: 80%; height: 90px">
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="txtPost" id="txtPost" class="form-control"
+                            placeholder="Share your thoughts" style="width: 100%; height: 100px;" required>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <input type="file" name="txtPostImage" id="txtPostImage" class="form-control"
+                                    accept="image/*">
+                            </div>
+                            <div class="col-md-6">
+                                <select id="txtPreference" name="txtPreference" class="form-control" required>
+                                    {% for posiblePreference in preferencePost%}
+                                    <option value="{{posiblePreference.pk}}">{{posiblePreference.gusto}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-12">
+                                <img src="" alt="" style="width: 100%;" id="postImage" name="postImage">
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-              </div>
-              <div class="bottom-post">
-                <!-- Botón de like -->
-                <a href="{% url 'like' %}" class="bottom-post-item">
-                  <i class="fa-solid fa-pencil" id="edit"></i>
-                  <p>Me gusta</p>
-                </a>
-                {% if user.id == publicacion.usuario._id %}
-                <!-- Botón de Modificar -->
-                <a href="{% url 'editar_publicacion' %}" class="bottom-post-item">
-                  <i class="fa-solid fa-pencil" id="edit"></i>
-                  <p>Modificar</p>
-                </a>
-                <!-- Botón de Borrar -->
-                <a href="{% url 'eliminar_publicacion'  %}" class="bottom-post-item">
-                  <i class="fa-solid fa-trash" id="trash"></i>
-                  <p>Borrar</p>
-                </a>
-              </div>
-              {% endif %}
-              <div class="bottom-post">
-                <div class="bottom-post-item">
-                  <i class="fa-solid fa-heart" id="heart"></i>
-                  <p class="">{{ publicacion.likes }}</p>
+
+                <div class="row justify-content-center" style="margin-top: 25px;">
+                    <button class="btn btn-outline-primary">Post</button>
                 </div>
-                <div class="bottom-post-item">
-                  <i class="fa-solid fa-comment" id="comment"></i>
-                  <p class="">{{ publicacion.comentarios }}</p>
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-            
-          </div>
+            </form>
         </div>
-      </div>
     </div>
-    
-  </div>
-</body>
+
+</div>
+
+<!-- Post List -->
+<div class="row justify-content-center" style="margin-top: 25px;">
+    <h4 class="text-muted text-center">What's new today</h4>
+    {% for post in postList %}
+    <div class="row" style="margin-top: 10px;">
+        <div class="card" style="background-color: rgba(177, 156, 217, 0.062); border: none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="{% static post.usuario.imagen %}" alt="profilepic"
+                            class="rounded-circle img-fluid bg-white"
+                            style="object-fit: cover; width: 80%; height: 75px">
+                    </div>
+                    <div class="col-md-10">
+                        <p>{{post.contenido}}</p>
+                        <img src="{% static post.imagen %}" alt="" style="width: 100%;" id="postImage" name="postImage">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<script>
+    const fileEl = document.getElementById('txtPostImage');
+
+    fileEl.addEventListener('change', () => {
+
+        const fr = new FileReader();
+        fr.readAsDataURL(fileEl.files[0]);
+
+        fr.addEventListener('load', () => {
+            const url = fr.result;
+            document.getElementById('postImage').src = url;
+        })
+    })
+
+</script>
+
 {% endblock %}

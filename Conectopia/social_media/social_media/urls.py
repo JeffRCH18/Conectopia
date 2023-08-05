@@ -46,11 +46,11 @@ urlpatterns = [
     path('listFriends/',friendsViews.listFriends, name='listFriends'),
     path('delete_accept_request/', friendsViews.delete_accept_request, name='delete_accept_request'),
     path('delete_friend/',friendsViews.delete_friend, name='delete-amigo'),
-    path('home_view/', homeViews.home_view, name='home'),
-    path('eliminar/', homeViews.eliminarPublicacion, name='eliminar_publicacion'),
-    path('crear/', homeViews.crearPublicacion, name='crear_publicacion'),
-    path('editar/', homeViews.editar_publicacion, name='editar_publicacion'),
-    path('comentarios/', homeViews.mostrar_comentarios, name='ver_comentarios'),
-    path('like/', homeViews.like_view, name='like')
+    path('home_view/', homeViews.visit_home, name='home'),
+    path('createPost/',homeViews.create_post)
+    #path('eliminar/', homeViews.eliminarPublicacion, name='eliminar_publicacion'),
+    #path('editar/', homeViews.editar_publicacion, name='editar_publicacion'),
+    #path('comentarios/', homeViews.mostrar_comentarios, name='ver_comentarios'),
+    #path('like/', homeViews.like_view, name='like')
 
 ]

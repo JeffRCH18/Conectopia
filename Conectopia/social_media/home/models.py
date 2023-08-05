@@ -1,23 +1,26 @@
-from django.db import models
-from django import forms
-from usuarios.models import Usuarios
+from djongo import models
+from usuarios.models import Usuarios, Gustos
+import datetime
 
-class Comentario(Document):
-    texto = StringField(max_length=500)
-    autor = StringField(max_length=100)
-    publicacion = ReferenceField(Publicacion)
+class Publicaciones(models.Model):
+    _id = models.ObjectIdField()
+    usuario = models.ForeignKey(Usuarios,on_delete=models.CASCADE)
+    fecha_publicacion = models.DateField(default=datetime.date.today)
+    imagen = models.CharField(max_length=500)
+    contenido = models.CharField(max_length=500)
+    preferencia = models.ForeignKey(Gustos,on_delete=models.CASCADE)
 
-class Publicacion(models.Model):
-    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
-    descripcion = models.TextField()
-    imagen = models.ImageField(upload_to='publicaciones/')
-    likes = models.PositiveIntegerField(default=0)
-    comentarios = models.ManyToManyField(Comentario, blank=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+class Comentarios(models.Model):
+    _id = models.ObjectIdField()
+    usuario = models.ForeignKey(Usuarios,on_delete=models.CASCADE)
+    Publicacion = models.ForeignKey(Publicaciones,on_delete=models.CASCADE)
+    comentario = models.CharField(max_length=500)
+
+class Likes(models.Model):
+    _id = models.ObjectIdField()
+    usuario = models.ForeignKey(Usuarios,on_delete=models.CASCADE)
+    publicacion = models.ForeignKey(Publicaciones,on_delete=models.CASCADE)
 
 
-class PublicacionForm(forms.ModelForm):
-    class Meta:
-        model = Publicacion
-        fields = ['descripcion', 'imagen']
 
+    
