@@ -1,0 +1,5 @@
+<form id="like-form" method="post" action="{% url 'like_view' %}">
+    {% csrf_token %}
+    <button type="submit">Like</button>
+  </form>
+  

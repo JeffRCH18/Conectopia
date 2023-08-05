@@ -49,6 +49,8 @@ urlpatterns = [
     path('home_view/', homeViews.home_view, name='home'),
     path('eliminar/', homeViews.eliminarPublicacion, name='eliminar_publicacion'),
     path('crear/', homeViews.crearPublicacion, name='crear_publicacion'),
-    path('editar/', homeViews.editar_publicacion, name='editar_publicacion')
+    path('editar/', homeViews.editar_publicacion, name='editar_publicacion'),
+    path('comentarios/', homeViews.mostrar_comentarios, name='ver_comentarios'),
+    path('like/', homeViews.like_view, name='like')
 
 ]

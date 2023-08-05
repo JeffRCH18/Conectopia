@@ -4,9 +4,7 @@ import uuid
 from django.shortcuts import render
 from django.http import HttpResponse 
 from usuarios.models import Usuarios
-
-# Create your views here.
-
+from models import Comentario, Publicacion, PublicacionForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, JsonResponse
 from friends.models import Solicitud
@@ -18,13 +16,15 @@ from django.template.loader import render_to_string
 from django.contrib import messages
 from django.db.models import Q
 from usuarios.decorators import session_filter_required
-
-#Import data related to the user
 import usuarios.loadStadistics as ls
-
 import json
 from bson import ObjectId, json_util
 from home.models import Publicacion
+from pymongo import MongoClient 
+
+
+
+
 # Create your views here.
 def visit_home(request):
     userID = request.session['userID']
@@ -119,3 +119,29 @@ def editar_publicacion(request, publicacion_id):
         form = PublicacionForm(instance=publicacion)
     
     return render(request, 'editar_publicacion.html', {'form': form, 'publicacion': publicacion})
+
+
+def mostrar_comentarios(request):
+    comentarios = Comentario.objects.all()  # Obtén todos los comentarios desde la base de datos
+    context = {'comentarios': comentarios}
+    return render(request, 'comentarios.html', context)
+
+
+def like_view(request):
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client['red_social']
+
+    if request.method == 'POST':
+        userID = request.session['userID']
+        userID = userID['$oid']
+        user = Usuarios.objects.get(pk=ObjectId(userID))
+        
+        likes_collection = db['likes_publicacion']
+        likes_collection.update_one(
+            {'user_id': str(user.id)},  
+            {'$inc': {'likes': 1}},
+            upsert=True
+        )
+        
+        return redirect('home')  
+    return redirect('error.html')  

@@ -19,6 +19,12 @@
                 </div>
               </div>
               <div class="bottom-post">
+                <!-- Botón de like -->
+                <a href="{% url 'like' %}" class="bottom-post-item">
+                  <i class="fa-solid fa-pencil" id="edit"></i>
+                  <p>Me gusta</p>
+                </a>
+                {% if user.id == publicacion.usuario._id %}
                 <!-- Botón de Modificar -->
                 <a href="{% url 'editar_publicacion' %}" class="bottom-post-item">
                   <i class="fa-solid fa-pencil" id="edit"></i>
@@ -30,6 +36,7 @@
                   <p>Borrar</p>
                 </a>
               </div>
+              {% endif %}
               <div class="bottom-post">
                 <div class="bottom-post-item">
                   <i class="fa-solid fa-heart" id="heart"></i>
@@ -37,7 +44,7 @@
                 </div>
                 <div class="bottom-post-item">
                   <i class="fa-solid fa-comment" id="comment"></i>
-                
+                  <p class="">{{ publicacion.comentarios }}</p>
                 </div>
               </div>
             </div>
