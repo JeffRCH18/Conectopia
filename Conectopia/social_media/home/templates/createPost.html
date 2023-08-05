@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'create.css' %}">
-    <title>Crear Publicación</title>
-</head>
-<body>
-    <h1>Crear Nueva Publicación</h1>
-    
-    <form method="post">
+{% extends 'applicationBase.html' %}
+
+{% block content %}
+{% load static %}
+<h1>Crear Publicación</h1>
+    <h2>Bienvenido, {{ user.nombre}}!</h2>
+    <form action="/crear/" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear</button>
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" required></textarea>
+        <br>
+
+        <label for="imagen">Imagen:</label>
+        <input type="file" id="imagen" name="imagen" required>
+        <br>
+
+        <input type="submit" value="Guardar">
     </form>
-    
-    <a href="{% url 'home' %}">Cancelar</a>
-</body>
-</html>
+{% endblock %}

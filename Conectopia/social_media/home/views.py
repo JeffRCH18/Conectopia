@@ -1,50 +1,82 @@
-from django.shortcuts import render, redirect, get_object_or_404
+import datetime
+import os
+import uuid
+from django.shortcuts import render
+from django.http import HttpResponse 
 from usuarios.models import Usuarios
-from home.models import Publicacion
-from .forms import PublicacionForm
+
+# Create your views here.
+
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponse, JsonResponse
+from friends.models import Solicitud
+from usuarios.models import Usuarios
+from usuarios.models import Gustos
+from usuarios.models import GustosUsuarios
+from friends.models import Amistad
+from django.template.loader import render_to_string
+from django.contrib import messages
+from django.db.models import Q
+from usuarios.decorators import session_filter_required
+
+#Import data related to the user
+import usuarios.loadStadistics as ls
 
 import json
-from bson import ObjectId
+from bson import ObjectId, json_util
+from home.models import Publicacion
 # Create your views here.
 def visit_home(request):
-
     userID = request.session['userID']
     userID = userID['$oid']
     user = Usuarios.objects.get(pk=ObjectId(userID))
-
-
-
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
-    
+
     return render(request, 'home.html',{'user': user,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation})
 
 
 #publicaciones
 def home_view(request):
+    userID = request.session['userID']
+    userID = userID['$oid']
+    user = Usuarios.objects.get(pk=ObjectId(userID))
+    friendsRecommendation = json.loads(request.session['friendsSuggestion'])
+    preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
     publicaciones = Publicacion.objects.all()  # Obtiene todas las publicaciones
-    return render(request, 'home.html', {'publicaciones': publicaciones})
+    return render(request, 'home.html', {'publicaciones': publicaciones,'user':user,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation})
+
 
 def crearPublicacion(request):
+    userID = request.session['userID']
+    userID = userID['$oid']
+    user = Usuarios.objects.get(pk=ObjectId(userID))
+    friendsRecommendation = json.loads(request.session['friendsSuggestion'])
+    preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
+    if request.method == 'GET':
+        return render(request, 'createPost.html', {'user': user, 'friends': friendsRecommendation, 'preferenceRecommendations': preferencesRecommendation})
+    
     if request.method == 'POST':
-        # Obtener los datos del formulario
-        usuario_id = request.POST['usuario_id']
         descripcion = request.POST['descripcion']
         imagen = request.FILES['imagen']
 
-        # Obtener el usuario desde el modelo Usuarios
-        usuario = Usuarios.objects.get(id=usuario_id)
+        # Generate a unique filename for the image of the publication
+        unique_filename = f"postpic_{uuid.uuid4().hex}.png"
+        path = os.path.join('social_media/static_shared/shared_images/', unique_filename)
 
-        # Crear la nueva publicación
+        # Save the image to the specific location
+        with open(path, 'wb+') as destination:
+            for chunk in imagen.chunks():
+                destination.write(chunk)
+
         nueva_publicacion = Publicacion(
-            usuario=usuario,
+            usuario=user,
             descripcion=descripcion,
-            imagen=imagen
+            imagen=f'shared_images/{unique_filename}' 
         )
         nueva_publicacion.save()
 
-        return redirect('home_view.html') 
-    return render(request, 'createPost.html') 
+    return render(request, 'createpost.html')
 
 def eliminarPublicacion(request, publicacion_id):
     publicacion = get_object_or_404(Publicacion, id=publicacion_id)
@@ -52,14 +84,20 @@ def eliminarPublicacion(request, publicacion_id):
     if request.method == 'POST':
         # Eliminar la publicación
         publicacion.delete()
-
-        return redirect('home.html')
+        context = {'publicacion': publicacion}
+        return render(request, 'deletePost.html', context)
+        
 
     context = {'publicacion': publicacion}
-    return render(request, 'home.html', context)
+    return render(request, 'deletePost.html', context)
 
 def crear_publicacion(request):
     if request.method == 'POST':
+        userID = request.session['userID']
+        userID = userID['$oid']
+        user = Usuarios.objects.get(pk=ObjectId(userID))
+        friendsRecommendation = json.loads(request.session['friendsSuggestion'])
+        preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
         form = PublicacionForm(request.POST)
         if form.is_valid():
             form.save()
@@ -67,7 +105,7 @@ def crear_publicacion(request):
     else:
         form = PublicacionForm()
     
-    return render(request, 'crear_publicacion.html', {'form': form})
+    return render(request, 'crear_publicacion.html', {'form': form,'user':user,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation}) 
 
 def editar_publicacion(request, publicacion_id):
     publicacion = get_object_or_404(Publicacion, pk=publicacion_id)

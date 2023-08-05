@@ -1,6 +1,6 @@
 from django.db import models
 from django import forms
-from otra_aplicacion.models import Usuarios
+from usuarios.models import Usuarios
 
 class Comentario(models.Model):
     usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
@@ -15,7 +15,3 @@ class Publicacion(models.Model):
     comentarios = models.ManyToManyField(Comentario, blank=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
-class PublicacionForm(forms.ModelForm):
-    class Meta:
-        model = Publicacion
-        fields = ['titulo', 'contenido', 'imagen', 'usuario']

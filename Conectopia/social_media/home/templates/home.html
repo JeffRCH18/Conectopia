@@ -1,110 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'applicationBase.html' %}
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{% static 'home.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <title>Conectopia</title>
-</head>
-
-<body>
+{% block content %}
+{% load static %}
   <div class="main-container">
     <div class="user-container">
       <div class="main-userInfo-container">
         <div class="userInfo-container">
           <div class="pfp-container">
-            <img
-              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt="" class="pfp" />
-          </div>
-          <div class="user-mainInfo-container">
-            <h5 class="userName">User Name</h5>
-            <p>Passionate software developper</p>
-          </div>
-          <div class="userStats-container">
-            <div class="stat">
-              <h5>255</h5>
-              <p>Posts</p>
-            </div>
-            <div class="stat">
-              <h5>364</h5>
-              <p>Followers</p>
-            </div>
-            <div class="stat">
-              <h5>421</h5>
-              <p>Following</p>
-            </div>
-          </div>
-          <hr />
-        </div>
-        <div class="userLinks-container">
-          <p><i class="fa-solid fa-house"></i>Home</p>
-          <p><i class="fa-solid fa-bell"></i>Notificactions</p>
-          <p><i class="fa-solid fa-people-arrows"></i>Connections</p>
-          <p><i class="fa-solid fa-gear"></i>Preferences</p>
-          <p><i class="fa-solid fa-door-open"></i>Log Out</p>
-          <hr />
-        </div>
-        <div class="viewProfile-container">
-          <h4 class="viewProfile">View Profile</h4>
-        </div>
-      </div>
-    </div>
-    <div class="center-container">
-      <div class="newPost-container">
-        <div class="upper-newPost">
-          <div class="pfp-container-small">
-            <img
-              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt="" class="pfp-small" />
-          </div>
-          <p>Share your thoughts ...</p>
-        </div>
-        <div class="newPost-options-container">
-          <div class="newPost-options">
-            <i class="fa-regular fa-image"></i>
-            <p>Image</p>
-          </div>
-          <div class="newPost-options">
-            <i class="fa-solid fa-icons"></i>
-            <p>Feeling</p>
-          </div>
-          <div class="newPost-options">
-            <i class="fa-solid fa-people-arrows"></i>
-            <p>Friends</p>
-          </div>
-        </div>
-      </div>
-      <div class="post-container">
-        <div class="topInfo-post-container">
-          <div class="upper-post">
-            <div class="pfp-container-small">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                alt="" class="pfp-small" />
-            </div>
-            {% block content %}
             {% for publicacion in publicaciones %}
             <div class="post-container">
               <div class="topInfo-post-txt">
-                <h5 class="userName-post">User Name</h5>
+                <p class="">{{ publicacion.usuario.nombre }}</p>
               </div>
               <div class="post">
                 <p class="">{{ publicacion.descripcion }}</p>
                 <div class="postImg-container">
-                  <img src="{{ publicacion.imagen.url }}" alt="" class="postImg" />
+                  <img src='{% static publicacion.imagen.url %}' class="postImg" />
                 </div>
               </div>
               <div class="bottom-post">
                 <!-- Botón de Modificar -->
-                <a href="{% url 'editar_publicacion' publicacion.id %}" class="bottom-post-item">
+                <a href="{% url 'editar_publicacion' %}" class="bottom-post-item">
                   <i class="fa-solid fa-pencil" id="edit"></i>
                   <p>Modificar</p>
                 </a>
                 <!-- Botón de Borrar -->
-                <a href="{% url 'borrar_publicacion' publicacion.id %}" class="bottom-post-item">
+                <a href="{% url 'eliminar_publicacion'  %}" class="bottom-post-item">
                   <i class="fa-solid fa-trash" id="trash"></i>
                   <p>Borrar</p>
                 </a>
@@ -116,80 +37,17 @@
                 </div>
                 <div class="bottom-post-item">
                   <i class="fa-solid fa-comment" id="comment"></i>
-                  <p class="">{{ publicacion.comentarios }}</p>
+                
                 </div>
               </div>
             </div>
             {% endfor %}
-            {% endblock %}
-
+            
           </div>
         </div>
       </div>
     </div>
-    <div class="left-container">
-      <div class="follow-container">
-        <h4 class="follow-txt">Who to follow</h4>
-        <div class="followUsers-container">
-          <div class="followUser-user">
-            <div class="pfp-container-small">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                alt="" class="pfp-small" />
-            </div>
-            <h6 class="userName-follow">User Name</h6>
-            <i class="fa-solid fa-circle-plus"></i>
-          </div>
-          <div class="followUser-user">
-            <div class="pfp-container-small">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                alt="" class="pfp-small" />
-            </div>
-            <h6 class="userName-follow">User Name</h6>
-            <i class="fa-solid fa-circle-plus"></i>
-          </div>
-          <div class="followUser-user">
-            <div class="pfp-container-small">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                alt="" class="pfp-small" />
-            </div>
-            <h6 class="userName-follow">User Name</h6>
-            <i class="fa-solid fa-circle-plus"></i>
-          </div>
-          <div class="followUser-user">
-            <div class="pfp-container-small">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                alt="" class="pfp-small" />
-            </div>
-            <h6 class="userName-follow">User Name</h6>
-            <i class="fa-solid fa-circle-plus"></i>
-          </div>
-        </div>
-      </div>
-      <div class="preferences-container">
-        <h4 class="follow-txt">Preferences</h4>
-        <div class="preferences-item">
-          <i class="fa-solid fa-layer-group"></i>
-          <h6>Cats</h6>
-        </div>
-        <div class="preferences-item">
-          <i class="fa-solid fa-layer-group"></i>
-          <h6>Cats</h6>
-        </div>
-        <div class="preferences-item">
-          <i class="fa-solid fa-layer-group"></i>
-          <h6>Cats</h6>
-        </div>
-        <hr />
-        <div class="viewProfile-container">
-          <h4 class="viewProfile">Look More</h4>
-        </div>
-      </div>
-    </div>
+    
   </div>
 </body>
-
-</html>
+{% endblock %}

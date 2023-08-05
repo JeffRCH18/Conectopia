@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Publicación</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'update.css' %}">
-</head>
+{% extends 'applicationBase.html' %}
+
+{% block content %}
+{% load static %}
 <body>
     <div class="container">
         <h2>Editar Publicación</h2>
@@ -28,3 +24,4 @@
     </div>
 </body>
 </html>
+{% endblock %}
