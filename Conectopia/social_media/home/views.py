@@ -1,11 +1,14 @@
+import os
 from django.shortcuts import render
 from django.shortcuts import redirect
 
 import json
 from bson import ObjectId, json_util
+from django.http import JsonResponse
+from django.core import serializers
 
 from usuarios.models import Usuarios, Gustos,GustosUsuarios
-from home.models import Publicaciones
+from home.models import Publicaciones, Comentarios, Likes
 
 # Create your views here.
 def visit_home(request):
@@ -71,7 +74,6 @@ def create_post(request):
     #return basic view
     return redirect(visit_home)
 
-
 def update_post(request):
 
     #Get user information
@@ -109,3 +111,58 @@ def update_post(request):
     #return basic view
     return redirect(visit_home)
 
+def delete_post(request):
+    
+    #Get the post
+    updatePost = request.POST.get('txtIdDeletePost')
+    updatePost = Publicaciones.objects.get(pk = ObjectId(updatePost))
+    
+    #Try to delete the photo related to the post
+    path = 'social_media\static_shared\shared_images\post_' + str(request.POST.get('txtIdDeletePost')) + '.png'
+
+    if os.path.exists(path):
+        os.remove(path)
+
+    updatePost.delete()
+    return redirect(visit_home)
+
+def post_comment(request):
+    
+    #Get the post
+    updatePost = request.POST.get('txtIdPostComment')
+    updatePost = Publicaciones.objects.get(pk = ObjectId(updatePost))
+
+    #Get user information
+    userID = request.session['userID']
+    userID = userID['$oid']
+    user = Usuarios.objects.get(pk=ObjectId(userID))
+
+    newComment = Comentarios(
+        usuario = user,
+        Publicacion = updatePost,
+        comentario = request.POST.get('txtpostComment')
+    )
+
+    newComment.save()
+    return redirect(visit_home)
+
+def get_comentarios(request):
+    
+    #Get the comments related to a post
+    postID = request.GET.get('postID')
+    comments = Comentarios.objects.filter(Publicacion=ObjectId(postID)).select_related('usuario')
+    comments_list = []
+
+    for comment in comments:
+        comment_data = {
+            'id': str(comment.pk),
+            'comentario': comment.comentario,
+            'usuario': {
+                'id': str(comment.usuario.pk),
+                'nombre': comment.usuario.nombre,
+                'imagen': comment.usuario.imagen,
+            }
+        }
+        comments_list.append(comment_data)
+
+    return JsonResponse(comments_list, safe=False)

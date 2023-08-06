@@ -251,7 +251,7 @@ def profilePic(request):
         user.save()
 
         
-        return redirect(userConfiguration)
+        return redirect(visit_home)
 
 @session_filter_required()
 def closeSession(request):

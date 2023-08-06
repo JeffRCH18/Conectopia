@@ -94,7 +94,7 @@
                         <button class="btn btn-outline-app">
                             <i class="fa-regular fa-heart" style="margin-right: 7px;"></i>Like
                         </button>
-                        <button class="btn btn-outline-app">
+                        <button class="btn btn-outline-app" onclick="commentPost('{{post.pk}}')">
                             <i class="fa-regular fa-comment" style="margin-right: 7px;"></i>Comments
                         </button>
 
@@ -180,11 +180,11 @@
                     <div class="row justify-content-center text-center">
                         <div class="col-md-8">
                             {% csrf_token %}
+                            <input type="text" name="txtIdDeletePost" id="txtIdDeletePost" class="form-control"
+                                value="postID" hidden>
                             <img src="{% static 'images/question-icon.webp' %}" alt="profilepic" style="width: 50%;">
                             <p style="margin-top: 8px;">Are you sure you would like to delete this post?</p>
-                            <div class="row justify-content-center" style="margin-top: 25px;">
-                                <input type="text" name="txtIdPost" id="txtIdPost" class="form-control" hidden>
-                            </div>
+
                         </div>
                     </div>
                     <div class="row justify-content-center text-center">
@@ -198,6 +198,70 @@
         </div>
     </div>
 </div>
+
+<!----------- Comments Modal ----------->
+<div class="modal fade" id="postCommentModal" tabindex="-1" aria-labelledby="postCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+
+                <!--New comment form -->
+                <form action="/postComment/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" name="txtIdPostComment" id="txtIdPostComment" class="form-control" value="postID"
+                        hidden>
+                    <div class="row justify-content-center text-center">
+                        <div class="col-md-2">
+                            <img src="{% static user.imagen %}" alt="profilepic"
+                                class="rounded-circle img-fluid bg-white"
+                                style="object-fit: cover; width: 80%; height: 75px">
+                            <div class="row justify-content-center" style="margin-top: 25px;">
+                                <button class="btn btn-outline-app"><i class="fa-brands fa-rocketchat"
+                                        style="margin-right: 7px;"></i>Post</button>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <input type="text" name="txtpostComment" id="txtpostComment" class="form-control"
+                                placeholder="Share your thoughts" style="width: 100%; height: 100%;" required>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- List of comments -->
+                <div id="commentsList" name="commentsList">
+                    <div class="row justify-content-center" style="margin-top: 15px;">
+
+                        <div class="col-md-11">
+
+                            <div class="card" style="background-color: rgba(177, 156, 217, 0.432); border: none">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img src="{% static user.imagen %}" alt="profilepic"
+                                                class="rounded-circle img-fluid bg-white"
+                                                style="object-fit: cover; width: 80%; height: 75px">
+                                        </div>
+
+                                        <div class="col-md-10">
+                                            <p class="text-muted">User Name</p>
+                                            <p>Text goes here</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!--------------------------------------- JS --------------------------------------->
 {% load static %}
 <script src="{% static 'Js/postValidations.js' %}"></script>
