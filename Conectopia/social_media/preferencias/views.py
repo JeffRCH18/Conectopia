@@ -10,6 +10,10 @@ from bson import json_util
 from usuarios.models import GustosUsuarios
 from usuarios.models import Usuarios
 from usuarios.models import Gustos
+
+from friends.models import Amistad,Solicitud
+from home.models import Publicaciones
+
 import pandas as pd
 
 # Create your views here.
@@ -46,13 +50,23 @@ def preferenceList(request):
         friendsRecommendation = json.loads(request.session['friendsSuggestion'])
         preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
         
+        #Required for all the views
+        solicitudes_pendientes = Solicitud.objects.filter(Id_receptor = user, Stade = 'Pendiente').count()
+        user_post = Publicaciones.objects.filter(usuario = user).count()
+        user_following = Amistad.objects.filter(user1 = user).count()
+        user_follower = Amistad.objects.filter(user2 = user).count()
 
         return render (request,'preferenceList.html',{
             'documentTitle':'Preference List',
             'user':user,
             'preferenceList':preferenceList,
             'friends':friendsRecommendation,
-            'preferenceRecommendations':preferencesRecommendation
+            'preferenceRecommendations':preferencesRecommendation,
+            #Required
+            'solicitudes_pendientes':solicitudes_pendientes,
+            'user_post':user_post,
+            'user_following':user_following,
+            'user_follower':user_follower,
         })
 
 def eliminatePreference(request):

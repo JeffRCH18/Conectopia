@@ -22,6 +22,10 @@ import usuarios.loadStadistics as ls
 #Import new views
 from home.views import visit_home
 
+#Data Models
+from friends.models import  Solicitud,Amistad
+from home.models import Publicaciones
+
 # Create your views here.
 def login (request):
     #Execute when the page is going to be load 
@@ -66,17 +70,26 @@ def userConfiguration(request):
     if request.method == 'GET':
 
         #Get the user that is log in the web page
+        #Required for all the views
         userID = request.session['userID']
         userID = userID['$oid']
         user = Usuarios.objects.get(pk = ObjectId(userID))   
         friendsRecommendation = json.loads(request.session['friendsSuggestion'])
         preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
+        solicitudes_pendientes = Solicitud.objects.filter(Id_receptor = user, Stade = 'Pendiente').count()
+        user_post = Publicaciones.objects.filter(usuario = user).count()
+        user_following = Amistad.objects.filter(user1 = user).count()
+        user_follower = Amistad.objects.filter(user2 = user).count()
 
         return render(request,'userConfiguration.html',{
             'documentTitle':'User Configuration',
             'user':user,
             'friends':friendsRecommendation,
-            'preferenceRecommendations':preferencesRecommendation
+            'preferenceRecommendations':preferencesRecommendation,
+            'solicitudes_pendientes':solicitudes_pendientes,
+            'user_post':user_post,
+            'user_following':user_following,
+            'user_follower':user_follower,
         })
     
     if request.method == 'POST':

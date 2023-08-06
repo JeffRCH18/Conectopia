@@ -206,26 +206,23 @@
             <div class="modal-body">
 
                 <!--New comment form -->
-                <form action="/postComment/" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="text" name="txtIdPostComment" id="txtIdPostComment" class="form-control" value="postID"
-                        hidden>
-                    <div class="row justify-content-center text-center">
-                        <div class="col-md-2">
-                            <img src="{% static user.imagen %}" alt="profilepic"
-                                class="rounded-circle img-fluid bg-white"
-                                style="object-fit: cover; width: 80%; height: 75px">
-                            <div class="row justify-content-center" style="margin-top: 25px;">
-                                <button class="btn btn-outline-app"><i class="fa-brands fa-rocketchat"
-                                        style="margin-right: 7px;"></i>Post</button>
-                            </div>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="text" name="txtpostComment" id="txtpostComment" class="form-control"
-                                placeholder="Share your thoughts" style="width: 100%; height: 100%;" required>
+                <input type="text" name="txtIdPostComment" id="txtIdPostComment" class="form-control" value="postID"
+                    hidden>
+                <div class="row justify-content-center text-center">
+                    <div class="col-md-2">
+                        <img src="{% static user.imagen %}" alt="profilepic" class="rounded-circle img-fluid bg-white"
+                            style="object-fit: cover; width: 80%; height: 75px">
+                        <div class="row justify-content-center" style="margin-top: 25px;">
+                            <button onclick="createNewComment()" class="btn btn-outline-app">
+                                <i class="fa-brands fa-rocketchat" style="margin-right: 7px;"></i>Post
+                            </button>
                         </div>
                     </div>
-                </form>
+                    <div class="col-md-10">
+                        <input type="text" name="txtpostComment" id="txtpostComment" class="form-control"
+                            placeholder="Share your thoughts" style="width: 100%; height: 100%;" required>
+                    </div>
+                </div>
 
                 <!-- List of comments -->
                 <div id="commentsList" name="commentsList">

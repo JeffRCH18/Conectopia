@@ -50,7 +50,7 @@ urlpatterns = [
     path('createPost/',homeViews.create_post),
     path('updatePost/',homeViews.update_post),
     path('deletePost/',homeViews.delete_post),
-    path('postComment/',homeViews.post_comment),
+    path('create_comment/',homeViews.create_comment,name='create_comment'),
     path('get_comentarios/',homeViews.get_comentarios,name='get_comentarios'),
     path('postLikes/',homeViews.postLikes,name='postLikes'),
     path('postDislike/',homeViews.dislikePost),

@@ -10,24 +10,40 @@ from django.core import serializers
 
 from usuarios.models import Usuarios, Gustos,GustosUsuarios
 from home.models import Publicaciones, Comentarios, Likes
+from friends.models import Solicitud,Amistad
 
 # Create your views here.
 def visit_home(request):
+    
+    #Required for all the views
     userID = request.session['userID']
     userID = userID['$oid']
     user = Usuarios.objects.get(pk=ObjectId(userID))
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
+    solicitudes_pendientes = Solicitud.objects.filter(Id_receptor = user, Stade = 'Pendiente').count()
+    user_post = Publicaciones.objects.filter(usuario = user).count()
+    user_following = Amistad.objects.filter(user1 = user).count()
+    user_follower = Amistad.objects.filter(user2 = user).count()
+
+    #Custom for this view: 
     posiblePreferences = Gustos.objects.all()
     postList = Publicaciones.objects.all().order_by('-fecha_publicacion')
 
     return render(request, 'home.html',
         {
+            #Required
             'user': user,
             'friends':friendsRecommendation, 
             'preferenceRecommendations':preferencesRecommendation, 
+            'solicitudes_pendientes':solicitudes_pendientes,
+            'user_post':user_post,
+            'user_following':user_following,
+            'user_follower':user_follower,
+
+            #Custom
             'preferencePost':posiblePreferences,
-            'postList':postList
+            'postList':postList,
         }
     )
 
@@ -127,10 +143,10 @@ def delete_post(request):
     updatePost.delete()
     return redirect(visit_home)
 
-def post_comment(request):
+def create_comment(request):
     
     #Get the post
-    updatePost = request.POST.get('txtIdPostComment')
+    updatePost = request.GET.get('postID')
     updatePost = Publicaciones.objects.get(pk = ObjectId(updatePost))
 
     #Get user information
@@ -141,11 +157,11 @@ def post_comment(request):
     newComment = Comentarios(
         usuario = user,
         Publicacion = updatePost,
-        comentario = request.POST.get('txtpostComment')
+        comentario = request.GET.get('comment')
     )
 
     newComment.save()
-    return redirect(visit_home)
+    return get_comentarios(request)
 
 def get_comentarios(request):
     

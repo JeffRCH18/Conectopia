@@ -43,19 +43,19 @@
                             <div class="row justify-content-center bg-white"
                                 style="border-bottom: 0.1rem solid gainsboro;;">
                                 <div class="col-xl-4 bg-white" style="border-right: 0.1rem solid gainsboro;;">
-                                    <h4 class="text-center bg-white">50</h4>
+                                    <h4 class="text-center bg-white">{{user_post}}</h4>
                                     <p class="bg-white text-muted text-center">
                                         Post
                                     </p>
                                 </div>
                                 <div class="col-xl-4 bg-white">
-                                    <h4 class="text-center bg-white">256</h4>
+                                    <h4 class="text-center bg-white">{{user_following}}</h4>
                                     <p class="bg-white text-muted text-center">
                                         Followers
                                     </p>
                                 </div>
                                 <div class="col-xl-4 bg-white" style="border-left: 0.1rem solid gainsboro;;">
-                                    <h4 class="text-center bg-white">390</h4>
+                                    <h4 class="text-center bg-white">{{user_follower}}</h4>
                                     <p class="bg-white text-muted text-center">
                                         Following
                                     </p>
@@ -63,23 +63,23 @@
                             </div>
                             <!-- User Options -->
                             <div class="container bg-white">
-                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;" href="/home_view/"><img
-                                        src="{% static 'images/Home icon.png' %}" alt="Home" class="iconStyle">Home
+                                <a class="row bg-white" style="margin-top: 50px; margin-left: 10px;  text-decoration: none; color: rgb(15, 81, 140);" href="/home_view/"><img
+                                        src="{% static 'images/Home icon.png' %}" alt="Home" class="iconStyle">Home 
                                 </a>
-                                <a class="row bg-white" style="margin-top: 65px; margin-left: 10px;"
+                                <a class="row bg-white" style="margin-top: 65px; margin-left: 10px; text-decoration: none; color: rgb(15, 81, 140);"
                                     href="{% url 'show_requests' %}"><img
                                         src="{% static 'images/Notification icon.png' %}" alt="Home"
-                                        class="iconStyle">Notifications
+                                        class="iconStyle">Notifications <span class="notification-counter">{{solicitudes_pendientes}}</span>
                                 </a>
-                                <a class="row bg-white" style="margin-top: 65px; margin-left: 10px;"
+                                <a class="row bg-white" style="margin-top: 65px; margin-left: 10px;  text-decoration: none; color: rgb(15, 81, 140);"
                                     href="{% url 'listFriends' %}" onclick="window.location.href = '/listfriends/'"><img
                                         src="{% static 'images/Connections icon.png' %}" alt="Home" class="iconStyle">
                                     Connections</a>
-                                <a class="row bg-white" style="margin-top: 65px; margin-left: 10px;"
+                                <a class="row bg-white" style="margin-top: 65px; margin-left: 10px;  text-decoration: none; color: rgb(15, 81, 140);"
                                     href="{% url 'preferences' %}"><img src="{% static 'images/Preferences icon.png' %}"
                                         alt="Home" class="iconStyle">Preferences</a>
 
-                                <a class="row bg-white" style="margin-top: 65px; margin-left: 10px;"
+                                <a class="row bg-white" style="margin-top: 65px; margin-left: 10px;  text-decoration: none; color: rgb(15, 81, 140);"
                                     onclick="window.location.href = '/closeSession/'"><img
                                         src="{% static 'images/Close Session icon.png' %}" alt="Home"
                                         class="iconStyle">Close Session</a>
@@ -126,11 +126,7 @@
                                     </div>
                                     <div class="col-6 bg-white">
                                         <h6 class="bg-white">{{item.nombre}}</h6>
-                                        <p class="bg-white text-muted">0 Friends in common</p>
-                                    </div>
-                                    <div class="col-3 bg-white">
-                                        <img src="{% static 'images/Add icon.png' %}" alt="Home" class="iconStyle"
-                                            style="width: 40px;">
+                                        <p class="bg-white text-muted">{{item.friend_in_commond}} Friends in common</p>
                                     </div>
                                 </div>
 
