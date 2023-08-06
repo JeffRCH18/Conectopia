@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.db.models import Q
 
 import json
 from bson import ObjectId, json_util
@@ -166,3 +167,78 @@ def get_comentarios(request):
         comments_list.append(comment_data)
 
     return JsonResponse(comments_list, safe=False)
+
+def get_likes (request):
+
+    #Get user ID
+    userID = request.session['userID']
+    userID = userID['$oid']
+
+    #Get the likes of likes related to the post. 
+    postID = request.GET.get('postID')
+    postID = ObjectId(postID)
+
+    likes = Likes.objects.filter(publicacion = postID)
+
+    #recover all the likes related to the post
+    likes_data = []
+    userLiked = False
+
+    for like in likes:
+
+        if str(like.usuario.pk) == userID:
+            userLiked = True
+
+
+        likes_data.append(
+            {
+                "userName":like.usuario.nombre,
+                "picPath":like.usuario.imagen
+            }
+        )
+
+    responseData = {
+        "user_liked":userLiked,
+        "likes":likes_data
+    }
+
+    return JsonResponse(responseData)
+
+def postLikes(request):
+    
+    #Get the comments related to a post
+    postID = request.GET.get('postID')
+    post = Publicaciones.objects.get(pk = ObjectId(postID))
+
+    #Get user information
+    userID = request.session['userID']
+    userID = userID['$oid']
+    user = Usuarios.objects.get(pk=ObjectId(userID))
+
+    newLike = Likes(
+        usuario = user,
+        publicacion = post
+    )
+
+    newLike.save()
+
+    return get_likes(request)
+
+def dislikePost(request):
+    #Get user information
+    userID = request.session['userID']
+    userID = userID['$oid']
+
+    #Get the comments related to a post
+    postID = request.POST.get('txtIdpostDislike')
+    likes = Likes.objects.filter(publicacion = ObjectId(postID))
+
+    for like in likes:
+        if str(like.usuario.pk) == userID:
+            like.delete()
+
+
+    return redirect(visit_home)
+
+
+    

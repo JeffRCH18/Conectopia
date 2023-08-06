@@ -51,7 +51,10 @@ urlpatterns = [
     path('updatePost/',homeViews.update_post),
     path('deletePost/',homeViews.delete_post),
     path('postComment/',homeViews.post_comment),
-    path('get_comentarios/',homeViews.get_comentarios,name='get_comentarios')
+    path('get_comentarios/',homeViews.get_comentarios,name='get_comentarios'),
+    path('postLikes/',homeViews.postLikes,name='postLikes'),
+    path('postDislike/',homeViews.dislikePost),
+    path('get_likes/',homeViews.get_likes,name='get_likes'),
     #path('eliminar/', homeViews.eliminarPublicacion, name='eliminar_publicacion'),
     #path('editar/', homeViews.editar_publicacion, name='editar_publicacion'),
     #path('comentarios/', homeViews.mostrar_comentarios, name='ver_comentarios'),

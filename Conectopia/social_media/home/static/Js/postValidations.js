@@ -103,3 +103,199 @@ function commentPost(postID) {
     });
 
 }
+
+function getLikePost(postID) {
+
+    $.ajax({
+        url: '/get_likes/',
+        type: 'GET',
+        data: { postID: postID },
+        dataType: 'json',
+        success: function (data) {
+
+            //print_data
+            console.log(data)
+
+            //Change the liked button depending if the user already liked or not.
+            if (data.user_liked == true) {
+                document.getElementById('likeForm').style.display = 'none'
+                document.getElementById('dislikeForm').style.display = ''
+            } else {
+                document.getElementById('likeForm').style.display = ''
+                document.getElementById('dislikeForm').style.display = 'none'
+            }
+
+            var commentsLists = $('#likesList');
+            commentsLists.empty();
+            likesData = data.likes
+
+            for (var i = 0; i < likesData.length; i++) {
+                var like = likesData[i];
+                var userName = like.userName;
+                var picPath = '/static/' + like.picPath;
+
+                // Create the elements for each like using jQuery
+                var rowDiv = $('<div>').addClass('row justify-content-center').css('margin-top', '15px');
+
+                var colDiv = $('<div>').addClass('col-md-11');
+
+                var cardDiv = $('<div>').addClass('card').css({
+                    'background-color': 'rgba(177, 156, 217, 0.432)',
+                    'border': 'none'
+                });
+
+                var cardBodyDiv = $('<div>').addClass('card-body');
+
+                var innerRowDiv = $('<div>').addClass('row');
+
+                var profilePicDiv = $('<div>').addClass('col-md-2');
+
+                var profilePicImg = $('<img>').attr({
+                    'src': picPath,
+                    'alt': 'profilepic'
+                }).addClass('rounded-circle img-fluid bg-white').css({
+                    'object-fit': 'cover',
+                    'width': '60%',
+                    'height': '55px'
+                });
+
+                var userInfoDiv = $('<div>').addClass('col-md-10');
+
+                var userNameParagraph = $('<p>').addClass('text-muted').css('margin', '3px').text(userName);
+
+                var likeParagraph = $('<p>').text('Likes this post').css('margin-bottom', '0px');
+
+                // Append the elements to each other
+                profilePicDiv.append(profilePicImg);
+
+                userInfoDiv.append(userNameParagraph);
+                userInfoDiv.append(likeParagraph);
+
+                innerRowDiv.append(profilePicDiv);
+                innerRowDiv.append(userInfoDiv);
+
+                cardBodyDiv.append(innerRowDiv);
+
+                cardDiv.append(cardBodyDiv);
+
+                colDiv.append(cardDiv);
+
+                rowDiv.append(colDiv);
+
+                // Append the newly created rowDiv to the commentsLists div using jQuery
+                commentsLists.append(rowDiv);
+            }
+
+            //Modify the require information in the form to create a new comment and show the modal
+            var myModal = document.getElementById('postLikesModal');
+            document.getElementById('txtIdpostLikes').value = postID
+            document.getElementById('txtIdpostDislike').value = postID
+            $(myModal).modal('show')
+
+
+
+        },
+        error: function (error) {
+            console.log('Error:', error);
+        }
+    });
+}
+
+function LikePost() {
+
+    postID = document.getElementById('txtIdpostLikes').value
+
+    $.ajax({
+        url: '/postLikes/',
+        type: 'GET',
+        data: { postID: postID},
+        dataType: 'json',
+        success: function (data) {
+
+            //print_data
+            console.log(data)
+
+            //Change the liked button depending if the user already liked or not.
+            if (data.user_liked == true) {
+                document.getElementById('likeForm').style.display = 'none'
+                document.getElementById('dislikeForm').style.display = ''
+            } else {
+                document.getElementById('likeForm').style.display = ''
+                document.getElementById('dislikeForm').style.display = 'none'
+            }
+
+            var commentsLists = $('#likesList');
+            commentsLists.empty();
+            likesData = data.likes
+
+            for (var i = 0; i < likesData.length; i++) {
+                var like = likesData[i];
+                var userName = like.userName;
+                var picPath = '/static/' + like.picPath;
+
+                // Create the elements for each like using jQuery
+                var rowDiv = $('<div>').addClass('row justify-content-center').css('margin-top', '15px');
+
+                var colDiv = $('<div>').addClass('col-md-11');
+
+                var cardDiv = $('<div>').addClass('card').css({
+                    'background-color': 'rgba(177, 156, 217, 0.432)',
+                    'border': 'none'
+                });
+
+                var cardBodyDiv = $('<div>').addClass('card-body');
+
+                var innerRowDiv = $('<div>').addClass('row');
+
+                var profilePicDiv = $('<div>').addClass('col-md-2');
+
+                var profilePicImg = $('<img>').attr({
+                    'src': picPath,
+                    'alt': 'profilepic'
+                }).addClass('rounded-circle img-fluid bg-white').css({
+                    'object-fit': 'cover',
+                    'width': '60%',
+                    'height': '55px'
+                });
+
+                var userInfoDiv = $('<div>').addClass('col-md-10');
+
+                var userNameParagraph = $('<p>').addClass('text-muted').css('margin', '3px').text(userName);
+
+                var likeParagraph = $('<p>').text('Likes this post').css('margin-bottom', '0px');
+
+                // Append the elements to each other
+                profilePicDiv.append(profilePicImg);
+
+                userInfoDiv.append(userNameParagraph);
+                userInfoDiv.append(likeParagraph);
+
+                innerRowDiv.append(profilePicDiv);
+                innerRowDiv.append(userInfoDiv);
+
+                cardBodyDiv.append(innerRowDiv);
+
+                cardDiv.append(cardBodyDiv);
+
+                colDiv.append(cardDiv);
+
+                rowDiv.append(colDiv);
+
+                // Append the newly created rowDiv to the commentsLists div using jQuery
+                commentsLists.append(rowDiv);
+            }
+
+            //Modify the require information in the form to create a new comment and show the modal
+            var myModal = document.getElementById('postLikesModal');
+            document.getElementById('txtIdpostLikes').value = postID
+            document.getElementById('txtIdpostDislike').value = postID
+            $(myModal).modal('show')
+
+
+
+        },
+        error: function (error) {
+            console.log('Error:', error);
+        }
+    });
+}

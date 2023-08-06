@@ -91,7 +91,7 @@
                 </div>
                 <div class="row" style="margin-top: 15px">
                     <div class="col-12">
-                        <button class="btn btn-outline-app">
+                        <button class="btn btn-outline-app" onclick="getLikePost('{{post.pk}}')">
                             <i class="fa-regular fa-heart" style="margin-right: 7px;"></i>Like
                         </button>
                         <button class="btn btn-outline-app" onclick="commentPost('{{post.pk}}')">
@@ -261,9 +261,71 @@
     </div>
 </div>
 
+<!----------- Likes Modal ----------->
+<div class="modal fade" id="postLikesModal" tabindex="-1" aria-labelledby="postLikesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+
+                <div class="row justify-content-center text-center" id="likeForm">
+                    <div class="col-md-3">
+                        <!--New like form -->
+                        <input type="text" name="txtIdpostLikes" id="txtIdpostLikes" class="form-control" value="postID"
+                            hidden>
+                        <button class="btn btn-outline-app" onclick="LikePost()">
+                            <i class="fa-regular fa-heart" style="margin-right: 7px;"></i>Like
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center text-center" id="dislikeForm">
+
+                    <!--New comment form -->
+                    <form action="/postDislike/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="txtIdpostDislike" id="txtIdpostDislike" class="form-control"
+                            value="postID" hidden>
+                        <button class="btn btn-outline-app">
+                            <i class="fa-solid fa-heart" style="margin-right: 7px;"></i>Liked
+                        </button>
+                    </form>
+
+                </div>
+
+                <!-- List of Lines -->
+                <div id="likesList" name="likesList">
+                    <div class="row justify-content-center" style="margin-top: 15px;">
+                        <div class="col-md-11">
+
+                            <div class="card" style="background-color: rgba(177, 156, 217, 0.432); border: none">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img src="{% static user.imagen %}" alt="profilepic"
+                                                class="rounded-circle img-fluid bg-white"
+                                                style="object-fit: cover; width: 60%; height: 55px">
+                                        </div>
+                                        <div class="col-md-10">
+                                            <p class="text-muted" style="margin: 3px;">User Name</p>
+                                            <p style="margin-bottom: 0px;">Likes this post</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--------------------------------------- JS --------------------------------------->
 {% load static %}
+
 <script src="{% static 'Js/postValidations.js' %}"></script>
 
 <script>
