@@ -70,3 +70,42 @@ def create_post(request):
 
     #return basic view
     return redirect(visit_home)
+
+
+def update_post(request):
+
+    #Get user information
+    userID = request.session['userID']
+    userID = userID['$oid']
+    user = Usuarios.objects.get(pk=ObjectId(userID))
+
+    #Get the post
+    updatePost = request.POST.get('txtIdPost')
+    updatePost = Publicaciones.objects.get(pk = ObjectId(updatePost))
+
+    #Get the new preference
+    txtPreference = request.POST.get('txtUpdatePostPreference')
+    preference = Gustos.objects.get(pk = ObjectId(txtPreference))
+
+    #Update the post
+    updatePost.contenido = request.POST.get('txtUpdatePost')
+    updatePost.preferencia = preference
+    updatePost.save()
+
+    try: 
+        image = request.FILES['txtUpdatePostImage']
+
+        path = 'social_media\static_shared\shared_images\post_' + str(request.POST.get('txtIdPost')) + '.png'
+
+        with open(path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+        
+        updatePost.imagen = 'shared_images/post_' + str(request.POST.get('txtIdPost')) + '.png'   
+        updatePost.save()
+    except:
+        return redirect(visit_home)
+
+    #return basic view
+    return redirect(visit_home)
+
