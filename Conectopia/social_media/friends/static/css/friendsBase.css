@@ -18,14 +18,14 @@ body{
     width: 45px;
     object-fit: cover;
     background-color: transparent;
-    margin-right: 10px; /* Espacio entre la imagen y el título */
+    margin-right: 10px; 
 }
 
 .iconStyle1 {
     width: 42px;
     object-fit: cover;
     background-color: transparent;
-    margin-right: 5px; /* Espacio entre la imagen y el título */
+    margin-right: 5px; 
     margin-left: 9px;
 }
 
@@ -138,8 +138,7 @@ body{
 }
 
 .common-friend {
-    font-size: 12px;
-    
+    font-size: 12px;  
     color: #888;
 }
   
@@ -324,14 +323,14 @@ body{
   }
 
 .btn-delete{
-    background-color: red;
+    
     color: #fff;
     border-color: transparent;
     border-radius: 3px;
 }
 
 .btn-accept{
-    background-color: #3390FF;
+    
     color: #fff;
     border-color: transparent;
     border-radius: 3px;

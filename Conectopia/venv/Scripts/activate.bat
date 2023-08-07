@@ -9,7 +9,7 @@ if defined _OLD_CODEPAGE (
 )
 
 set VIRTUAL_ENV=./Conectopia/venv
-rem C:\Users\Admin\Documents\2. Ingenieria en Sistemas\Cuatrimestre 5 - 2023\Bases de Datos NoSQL\Proyecto\Red Social\venv
+rem C:\Users\jeffR\OneDrive\Documentos\GitHub\Conectopia\Conectopia\venv\Scripts
 
 if not defined PROMPT set PROMPT=$P$G
 

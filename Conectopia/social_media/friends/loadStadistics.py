@@ -7,7 +7,45 @@ from usuarios.models import GustosUsuarios
 #Data manipulation libraries
 import pandas as pd
 import numpy as np
+def getNewFriendsSuggestions(userID):
+    userID = str(userID)
+    print(userID)
 
+    #Get the user list values
+    users = Usuarios.objects.all()
+    users = pd.DataFrame(list(users.values()))
+
+    #Get the information of current friends
+    friends = Amistad.objects.all()
+    friends = pd.DataFrame(list(friends.values()))
+    friends['is_friend?'] = friends.apply(lambda x: True if (str(x['user1_id']) == userID) | (str(x['user2_id']) == userID)  else False,axis=1)
+
+    #Get the people who is already friend of the user
+    userFriends = friends
+    userFriends = userFriends[userFriends['is_friend?'] == True][['user2_id','is_friend?']].drop_duplicates().rename(columns={'user2_id':'friend_id'})
+
+    #Add the indicator to the users list
+    usersComplete = pd.merge(users,userFriends,left_on='_id',right_on='friend_id',how='left').drop(columns=['correo','fecha_nacimiento','contrasenna','user_description','friend_id'])
+
+    #Get the friends that are in commond
+    friendsCommond = pd.merge(friends,userFriends.rename(columns={'is_friend?':'friend_in_commond'}),left_on='user1_id',right_on='friend_id',how='left').rename(columns={'friend_id':'friend_my_id'})
+    friendsCommond = friendsCommond[friendsCommond['is_friend?'] == False]
+    friendsCommond['friend_in_commond'] = friendsCommond.apply(lambda x: 1 if x['friend_in_commond'] == True else 0,axis=1)
+    friendsCommond['new_friend'] = friendsCommond.apply(lambda x : x['user2_id'] if x['user1_id'] == x['friend_my_id'] else x['user1_id'],axis=1)
+    friendsCommond = friendsCommond[friendsCommond['friend_in_commond'] == 1].groupby(['new_friend'],as_index=False)['friend_in_commond'].sum()
+
+    #Add the indicator of friends in commond
+    usersComplete = pd.merge(usersComplete,friendsCommond,left_on='_id',right_on='new_friend',how='left').drop(columns=['new_friend'])
+    usersComplete = usersComplete.fillna(0)
+    usersComplete = usersComplete[['_id','nombre','imagen','friend_in_commond','is_friend?']].sort_values(by='friend_in_commond',ascending=False).rename(columns={'_id':'userId'})
+    usersComplete['friend_in_commond'] = usersComplete['friend_in_commond'].apply(int).apply(str)
+    usersComplete['userId'] = usersComplete['userId'].apply(str)
+
+    #Get the final recommendation: 
+    recommendation = usersComplete.to_json(orient='records')
+    print(recommendation)
+
+    return recommendation
 def getNewFriendsSuggestion(userID):
 
     userID = str(userID)

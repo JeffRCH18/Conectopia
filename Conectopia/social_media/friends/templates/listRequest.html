@@ -1,4 +1,4 @@
-{% extends 'appBase.html' %}
+{% extends 'applicationBase.html' %}
 {% load static %}
 
 {% block content %}
@@ -6,7 +6,7 @@
     <div class="card-body bg-white col-central">
         <div class="header-content2">
             <img src="{% static 'images/log-lista.png' %}" class="img-list">
-            <h1 class="text-user">Solicitudes de amistad pendientes</h1>
+            <h1 class="text-user">Pending friend requests</h1>
         </div>
     </div>
 </div>
@@ -22,14 +22,18 @@
                         <div class="friend-info1">
                             <li>
                             <h3>{{ solicitud.Id_emisor.nombre }}</h3>
-                            <span class="common-friend1">1 amigo en común</span>
+                            <span class="common-friend1" {{item.friend_in_commond}} > friend in common</span>
                             </li>
                         </div>
                         <div class="button-container">
                             {% csrf_token %}
                             <input type="hidden" name="solicitud_id" value="{{ solicitud.pk }}">
-                            <button type="submit" class="btn-delete" name="accion" value="eliminar">Eliminar</button>
-                            <button type="submit" class="btn-accept" name="accion" value="aceptar">Aceptar</button>
+                            <button type="submit" class="btn-delete" name="accion" value="eliminar">
+                                <img src="{% static 'images/icon-cancel.png' %}" style="width: 40px; height: 40px;">
+                            </button>
+                            <button type="submit" class="btn-accept" name="accion" value="aceptar">
+                                <img src="{% static 'images/icon-yes.png' %}" style="width: 40px; height: 40px;">
+                            </button>
                         </div>
                     </div>
                 </form>

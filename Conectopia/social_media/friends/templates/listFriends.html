@@ -1,15 +1,16 @@
-{% extends 'appBase.html' %}
+{% extends 'applicationBase.html' %}
 {% load static %}
 
 {% block content %}
+
 <div class="container1">
   <div class="users-container">
-    <img src="{% static 'images/log-lista.png' %}" class="img-list">
+    <img src="{% static 'images/icon-friends.png' %}" class="img-list">
     <div class="header-content2">
       <h1 class="text-users">Friends list</h1>
       <a class="btn-request" href="{% url 'search' %}">
         <div class="flex-container">
-          <img src="{% static 'images/log-users.png' %}" alt="Home" class="iconStyle1">
+          <img src="{% static 'images/icon-search.png' %}" alt="Home" class="iconStyle1">
           <h1 class="text-user1">Search Users</h1>
         </div>
       </a>
@@ -20,25 +21,27 @@
   <div class="card-body bg-white col-central">
     {% if amistad %}
     <ul class="list-friends">
-      {% for amigo in amistad %}
-      <li>
+      {% for amigo in amistad %} {# Avoid showing the user itself as a friend #}
+        <li>
           <div class="friend-item">
-              <img src='{% static amigo.imagen %}' alt="Foto de amigo" style="width: 40px; height: 40px;">
-              <div class="friend-info">
-                <list>
-                  <h3>{{ amigo.nombre }}</h3>
-                  <span class="common-friend">1 amigo en común</span>
+            <img src='{% static amigo.imagen %}' alt="Foto de amigo" style="width: 40px; height: 40px;">
+            <div class="friend-info">
+              <list>
+                <h3>{{user.pk}}</h3>
+                <h3>{{ amigo.nombre }}</h3>
+                <span class="common-friend">1 amigo en común</span>
               </list>
-              </div>
-              <form class="delete-friend-form" method="post" action="{% url 'delete-amigo' %}">
-                  {% csrf_token %}
-                  <input type="hidden" name="friend_id" value="{{ amigo.pk }}">
-                  <button type="submit" class="btn-add add-friend-btn">
-                    <img src="{% static 'images/log-delet.png' %}" style="width: 40px; height: 40px;">
-                  </button>
-              </form>
+            </div>
+            <form class="delete-friend-form" method="post" action="{% url 'delete-amigo' %}">
+              {% csrf_token %}
+              <input type="hidden" name="friend_id" value="{{ amigo.pk }}">
+              <button type="submit" class="btn-add add-friend-btn">
+                <img src="{% static 'images/log-delet.png' %}" style="width: 40px; height: 40px;">
+              </button>
+            </form>
           </div>
-      </li>
+        </li>
+      
       {% endfor %}
     </ul>
     {% else %}

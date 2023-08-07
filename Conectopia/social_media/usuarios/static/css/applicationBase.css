@@ -20,18 +20,23 @@ body{
     margin-left: 20px;
 }
 
-.btn-add{
-    display: inline-block;
-    background-color:#D0CECD  ; /* Color de fondo del botón */
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #040404  ; /* Color del texto del botón */
-    margin-bottom: 15px;
-    padding: 5px 5px;
+.btn-add {
+    border: none;
+    padding-left: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.btn-addd{
+    background-color: #3390FF;
+    color: #040404;
+    width: 90px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px; /* Asegura que el texto esté centrado verticalmente */
     text-decoration: none; /* Sin subrayado */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    margin-right: 10px;
-    position: relative;
+    margin-left: 15px;
 }
 
 .navbar-friends{
@@ -70,31 +75,50 @@ body{
     padding: 0;
 }
 
-.amigo-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+.list-friends {
+    list-style-type: none;
+    margin-top: 5px;
+    padding: 0;
 }
 
-.amigo-items {
+
+.friend-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 10px;
+    background-color: #DFDEEF;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #B19CD9;
+    
 }
 
-.amigo-item img {
+.friend-item:hover{
+    background-color: white;
+
+}
+
+.friend-item .users-container {
+    display: flex;
+    align-items: center;
+}
+
+.friend-item img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     margin-right: 10px;
 }
 
-.amigo-info {
+.friend-info {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    flex: 1;
+
 }
   
-.amigo-info h3 {
+.friend-info h3 {
     margin: 0;
     margin-bottom: 5px;
     font-size: 22px;
@@ -104,12 +128,22 @@ body{
     margin-bottom: 20px; /* Ajusta el valor según tus necesidades */
 }
 
-.en-comun {
-    font-size: 12px;
+.btn-addd-container {
+    display: flex;
+    justify-content: flex-end; /* Alinea el contenido a la derecha dentro de .btn-addd-container */
+    margin-top: 5px;
+}
+
+.common-friend {
+    font-size: 12px;  
     color: #888;
 }
-  
-.btn-agrega {
+
+.pendiente {
+    margin-left: auto; /* Mueve el elemento al borde derecho */
+}
+
+.btn-add {
     border: none;
     padding-left: 5px;
     background-color: transparent;
@@ -117,33 +151,64 @@ body{
     margin-left: auto;
 }
  
-.bton-buscador{
-    background: #3390FF;
-    color: #DFDEEF;
+.btn-search{
+    background:white;
+    color: #B19CD9;
     padding-bottom: 5px;
     margin-bottom: 15px;
     margin-top: 10px;
     width: 30%;
     height: 35px;
     border-radius: 5px;
-    border-style: none;
+    border: 1px solid #B19CD9;
+    border-radius: 6px;
     text-align: center;
 }
 
-.text-buscador{
+.btn-search:hover{
+    background: #B19CD9;
+    color: white;
+}
+
+
+.text-search1{
     margin-top: 8px;
     margin-bottom: 10px;
     height: 30px;
-    color: #3390FF;
     opacity: 1;
-    background-color: #DFDEEF;
+    background-color: white;
+    border: 1px solid #B19CD9;
+    border-radius: 6px;
     margin-right: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+.text-search1::placeholder{
+    color:#B19CD9;
+}
+
+.text-search1:focus{
+    border-color: #B19CD9;
+    background: #B19CD9;
+    outline: none;
+    color: white;
 }
 
 .text-user{
     margin-top: 12px;
-    margin-left: 15px;
+    margin-left: 6px;
     font-size: 22px;
+    width: 140px;
+    height: 30px;
+    white-space: nowrap;
+}
+
+.text-user1{
+    margin-top: 12px;
+    margin-left: 1px;
+    font-size: 22px;
+    width: 140px;
+    height: 30px;
 }
 
 .search-container {
@@ -153,11 +218,31 @@ body{
     padding-bottom: 5px;
 }
 
+.users-container {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
 
-.rr{
+.header-content {
+    display: flex;
+    align-items: center; 
+    margin-left: 10px; 
+  }
+
+.header-content2{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 20px; 
+  margin-top: -10px;
+
+}
+
+.container-list{
     margin-top: 20px;
     padding-top: 2px;
-    background-color: ghostwhite;
+    background-color:gainsboro;
 }
 
 .img-user{
@@ -181,15 +266,23 @@ body{
     border-radius: 5px;
 }
  
-.container-list{
+.container1 {
     display: flex;
     flex-direction: column;
     align-items: start;
-    background-color:red;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    height: 90px;
     border-radius: 5px;
 }
+
+
+.container-list{
+    margin-top: 20px;
+    padding-top: 2px;
+    background-color:gainsboro;
+}
+
 
 .input-container {
     display: flex;
@@ -209,4 +302,117 @@ body{
     display: inline-block;
     margin-left: 5px;
     line-height: 12px;
+}
+
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 5px;
+    margin-right: 10px;
+    margin-bottom: -5px;
+}
+
+.btn-request{
+    color: #040404;
+    text-decoration: none; 
+    margin-left: 196px; 
+}
+
+.text-users{
+    margin-top: 12px;
+    font-size: 22px;
+    margin: 0;
+    margin-right: -2px; /* Espacio entre el ícono y el texto */
+    white-space: nowrap;
+  }
+
+.no-friend{
+    background-color: #3390FF;
+    display: inline-block;
+    text-align: center;
+    padding: 5px; /* Puedes ajustar el valor del padding según tus preferencias */
+    border-radius: 5px; /* Puedes agregar bordes redondeados al contenedor si deseas */
+    
+    opacity: 0.5;
+}
+    
+.no-friend p{
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    color: aliceblue;
+    margin: 0; /
+}
+.container_no_friend {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    height: 10vh; /* O ajusta el alto según tus necesidades */
+  }
+
+.btn-delete{
+    background-color: transparent;
+    color: #fff;
+    border-color: transparent;
+    border-radius: 3px;
+}
+
+.btn-accept{
+    background-color: transparent;
+    color: #fff;
+    border-color: transparent;
+    border-radius: 3px;
+}
+
+.friend-info1 {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    white-space: nowrap; /* Evita que el nombre se divida en varias líneas */
+}
+
+.friend-info1 h3 {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 22px;
+}
+
+.common-friend1 {
+    font-size: 12px;
+    color: #888;
+    display: inline-block; /* Hace que el texto ocupe solo el espacio necesario */
+}
+
+.flex-container {
+    display: flex;
+    margin-left: -15px;
+    color: #B19CD9;
+    border: 1px solid #B19CD9;
+    border-radius: 6px;
+    background-color:white;
+}
+
+
+.flex-container:hover{
+    border-width: 1px;
+    background-color: #B19CD9;
+    border-color: white;
+    color: white;
+}
+
+.notification-label {
+    margin-left: 10px;
+  }
+
+.tt{
+    text-decoration: none;
+}
+
+.iconStyle1 {
+    width: 42px;
+    object-fit: cover;
+    background-color: transparent;
+    margin-right: 5px; 
+    margin-left: 9px;
 }

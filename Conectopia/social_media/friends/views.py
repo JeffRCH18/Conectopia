@@ -1,19 +1,19 @@
 from django.shortcuts import render
-from django.http import HttpResponse 
+from django.http import HttpResponse
+import pandas as pd 
 from usuarios.models import Usuarios
 
 # Create your views here.
 
-from django.shortcuts import get_object_or_404, redirect, render
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from django.http import JsonResponse
 from friends.models import Solicitud
 from usuarios.models import Usuarios
-from usuarios.models import Gustos
-from usuarios.models import GustosUsuarios
+from home.models import Publicaciones
 from friends.models import Amistad
-from django.template.loader import render_to_string
 from django.contrib import messages
 from django.db.models import Q
+
 from usuarios.decorators import session_filter_required
 
 #Import data related to the user
@@ -31,11 +31,22 @@ def listFriends(request):
 
     amigos = Usuarios.objects.filter(
         Q(following__user1=user) | Q(follower__user2=user)
-    ).exclude(pk=user.pk) 
+    ).exclude(pk=user.pk).distinct()  # Agrega .distinct() para eliminar duplicados
+
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
     solicitudes_pendientes = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
-    return render(request, 'listFriends.html', {'user': user, 'amistad': amigos,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitudes_pendientes})
+    user_post = Publicaciones.objects.filter(usuario = user).count()
+    user_following = Amistad.objects.filter(user1 = user).count()
+    user_follower = Amistad.objects.filter(user2 = user).count()
+    
+    return render(request, 'listFriends.html',
+        {'user': user, 'amistad': amigos, 'friends': friendsRecommendation,
+         'preferenceRecommendations': preferencesRecommendation,
+         'solicitudes_pendientes': solicitudes_pendientes, 'user_post':user_post,
+         'user_following':user_following,
+         'user_follower':user_follower
+        })
 
 
 def searchUser(request):
@@ -64,10 +75,13 @@ def searchUser(request):
     
     usuarios_usuarios = users.exclude(pk=user.pk).exclude(pk__in=usuarios_amigos_ids)
 
+    friendsCommon = json.loads(request.session['friendsSuggestion'])
     friendsRecommendation = json.loads(request.session['friendsSuggestion'])
     preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
-    
     solicitud_pendiente = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
+    user_post = Publicaciones.objects.filter(usuario = user).count()
+    user_following = Amistad.objects.filter(user1 = user).count()
+    user_follower = Amistad.objects.filter(user2 = user).count()
 
     for usuario in usuarios_usuarios:
         usuario.en_espera = usuario.pk in usuarios_solicitudes_amigos_ids
@@ -83,7 +97,14 @@ def searchUser(request):
             })
         return JsonResponse(data, safe=False)
     else:
-        return render(request, 'addFriends.html', {'user': user, 'usuarios_usuarios': usuarios_usuarios,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitud_pendiente})
+        return render(request, 'addFriends.html', 
+            {'user': user, 'usuarios_usuarios': usuarios_usuarios,
+             'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation,
+             'solicitudes_pendientes': solicitud_pendiente,
+             'user_post':user_post,
+             'user_following':user_following,
+             'user_follower':user_follower,'como':friendsCommon
+            })
 
 
 def add_request(request):
@@ -95,14 +116,14 @@ def add_request(request):
         receptor = Usuarios.objects.get(pk=ObjectId(receptor_id))
 
         if Amistad.objects.filter(Q(user1=user, user2=receptor) | Q(user1=receptor, user2=user)).exists():
-            # Ya son amigos, no se puede enviar solicitud
+           
             return JsonResponse({'success': False, 'message': 'Ya eres amigo de este usuario.'})
 
         if Solicitud.objects.filter(Id_emisor=user, Id_receptor=receptor, Stade='Pendiente').exists():
-            # Ya hay una solicitud pendiente, no se puede enviar otra
+            
             return JsonResponse({'success': False, 'message': 'Ya tienes una solicitud de amistad pendiente para este usuario.'})
 
-        # Crear la solicitud de amistad
+        
         solicitud = Solicitud(Id_emisor=user, Id_receptor=receptor, Stade='Pendiente')
         solicitud.save()
 
@@ -115,11 +136,21 @@ def show_requests(request):
         userID = request.session.get('userID') 
         userID = userID['$oid'] 
         user = Usuarios.objects.get(pk=ObjectId(userID))
+        
         solicitudes_pendientes = Solicitud.objects.filter(Id_receptor_id=user, Stade='Pendiente')
         solicitud_pendiente = Solicitud.objects.filter(Id_receptor=user, Stade='Pendiente').count()
         friendsRecommendation = json.loads(request.session['friendsSuggestion'])
         preferencesRecommendation = json.loads(request.session['preferenceSuggestion'])
-        return render(request, 'listRequest.html', {'user': user, 'friends_solicitud': solicitudes_pendientes,'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation, 'solicitudes_pendientes': solicitud_pendiente})
+        user_post = Publicaciones.objects.filter(usuario = user).count()
+        user_following = Amistad.objects.filter(user1 = user).count()
+        user_follower = Amistad.objects.filter(user2 = user).count()
+        
+        return render(request, 'listRequest.html',
+            {'user': user, 'friends_solicitud': solicitudes_pendientes,
+             'friends':friendsRecommendation, 'preferenceRecommendations':preferencesRecommendation,
+             'solicitudes_pendientes': solicitud_pendiente,'user_post':user_post,
+             'user_following':user_following,'user_follower':user_follower,
+            })
 
 def delete_accept_request(request):
     if request.method == 'POST':
@@ -140,11 +171,9 @@ def delete_accept_request(request):
             solicitud.save()
 
             if solicitud.Id_emisor != user:
-                # Crear la amistad en sentido 1: usuario en sesión sigue a usuario que envió la solicitud
                 amistad_usuario_sesion = Amistad.objects.create(user1=user, user2=solicitud.Id_emisor)
                 amistad_usuario_sesion.save()
 
-                # Crear la amistad en sentido 2: usuario que envió la solicitud sigue al usuario en sesión
                 amistad_usuario_emisor = Amistad.objects.create(user1=solicitud.Id_emisor, user2=user)
                 amistad_usuario_emisor.save()
 
@@ -160,16 +189,13 @@ def delete_friend(request):
         user = Usuarios.objects.get(pk=ObjectId(userID))
         friend = Usuarios.objects.get(pk=ObjectId(friend_id))
 
-        # Obtener todas las amistades que cumplen con los criterios de búsqueda
         amistades = Amistad.objects.filter(Q(user1=user, user2=friend) | Q(user1=friend, user2=user))
 
-        # Eliminar todas las amistades
         for amistad in amistades:
             amistad.delete()
 
-        # Eliminar la solicitud si existe
         try:
-            solicitud = Solicitud.objects.get(Id_emisor=user, Id_receptor=friend)
+            solicitud = Solicitud.objects.get(Q(Id_emisor=user, Id_receptor=friend ) | Q(Id_emisor=friend, Id_receptor=user ))
             solicitud.delete()
         except Solicitud.DoesNotExist:
             pass
@@ -177,3 +203,4 @@ def delete_friend(request):
         messages.success(request, 'Amistad eliminada correctamente.')
 
     return redirect('listFriends')
+

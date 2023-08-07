@@ -39,8 +39,8 @@ deactivate () {
 deactivate nondestructive
 
 #"C:\Users\Admin\Documents\2. Ingenieria en Sistemas\Cuatrimestre 5 - 2023\Bases de Datos NoSQL\Proyecto\Red Social\venv"
-
-VIRTUAL_ENV="./Conectopia/venv"
+#./Conectopia/venv
+VIRTUAL_ENV="C:\Users\jeffR\OneDrive\Documentos\GitHub\Conectopiabb\Conectopia\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
