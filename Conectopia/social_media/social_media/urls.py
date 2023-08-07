@@ -21,6 +21,9 @@ from usuarios import views as usuariosViews
 from friends import views as friendsViews
 from preferencias import views as preferenceViews
 
+from django.views.static import serve
+from django.conf.urls import url
+from django.conf import settings
 urlpatterns = [
     path('',usuariosViews.login),
     path('admin/', admin.site.urls),
@@ -59,5 +62,6 @@ urlpatterns = [
     #path('editar/', homeViews.editar_publicacion, name='editar_publicacion'),
     #path('comentarios/', homeViews.mostrar_comentarios, name='ver_comentarios'),
     #path('like/', homeViews.like_view, name='like')
-
+    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
 ]
